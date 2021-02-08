@@ -12,11 +12,21 @@ final class CreateMediaObjectAction
     public function __invoke(Request $request): MediaObject
     {
         $uploadedFile = $request->files->get('file');
-       
+        $fileName = $request->request->get('filename');
+        $experimentID = $request->request->get('experimentid');
+        $userID = $request->request->get('userid');
+        
+        
 
         $mediaObject = new MediaObject();
         $mediaObject->file = $uploadedFile;
+        $mediaObject->filename = $fileName;
+        $mediaObject->experimentid = $experimentID;
+        $mediaObject->userid = $userID;
+   
+       
 
         return $mediaObject;
     }
+    
 }

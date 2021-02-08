@@ -41,12 +41,12 @@ class ExperimentsProtocol
      */
     private $protocol;
 
-    /**
+  /**
      * @var \Experiments
      *
-     * @ORM\ManyToOne(targetEntity="Experiments")
+     * @ORM\ManyToOne(targetEntity="Experiments", cascade={"persist"})
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="experiment_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="experiment_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $experimentid;

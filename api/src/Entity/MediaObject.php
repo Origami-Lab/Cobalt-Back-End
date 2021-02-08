@@ -15,34 +15,57 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="media_object", indexes={@ORM\Index(name="fk_media_object_experiments_id", columns={"experiment_id"}), @ORM\Index(name="fk_media_object_users_userid", columns={"userid"})})
- * @ApiResource(iri="http://schema.org/MediaObject", collectionOperations={
- *     "get",
- *     "post"={
- *         "method"="POST",
- *         "path"="/media_objects",
- *         "controller"=CreateMediaObjectAction::class,
- *         "defaults"={"_api_receive"=false},
- *         "denormalization_context"={"groups"={"media_object_post"}},
- *         "validation_groups"={"media_object_post"},
- *         "swagger_context" = {
- *            "consumes" = {
- *                "multipart/form-data",
- *             },
- *             "parameters" = {
- *                 {
- *                      "name" = "file",
- *                      "in" = "formData",
- *                      "required" = "true",
- *                      "type" = "file",
- *                      "description" = "The file to upload"
- *                 }
- *             },
- *         }
+ * @ORM\Table(name="media_object")
+ * @ApiResource(
+ *     iri="http://schema.org/MediaObject",
+ *     normalizationContext={
+ *         "groups"={"media_object_read"}
  *     },
- * }) 
+ *     collectionOperations={
+ *         "post"={
+ *             "controller"=CreateMediaObjectAction::class,
+ *             "deserialize"=false,
+ *             "validation_groups"={"Default", "media_object_create"},
+ *             "openapi_context"={
+ *              "summary"="Upload files",
+ *                 "requestBody"={
+ *                     "content"={
+ *                         "multipart/form-data"={
+ *                             "schema"={
+ *                                 "type"="object",
+ *                                 "properties"={
+ *                                     "file"={
+ *                                         "type"="file",
+ *                                         "format"="binary",
+ *                                     },
+ *                                      "filename"={
+ *                                          "type"="string",
+ *                                          
+ *                                      },
+ *                                      "experimentid"={
+ *                                          "type"="string",
+ *                                          
+ *                                      },
+ *                                      "userid"={
+ *                                          "type"="string",
+ *                                          
+ *                                      },
+ *                                 }
+ *                             }
+ *                         }
+ *                     }
+ *                 }
+ *             }
+ *         },
+ *         "get"
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "delete"
+ *     }
+ * )
  * @Vich\Uploadable
- * @ApiFilter(SearchFilter::class, properties={"experimentid": "/experiments/id"})
+ * @ApiFilter(SearchFilter::class, properties={"experimentid": "exact" , "userid": "exact"})
  */
 class MediaObject
 {
@@ -52,6 +75,7 @@ class MediaObject
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      * @ORM\Id
+     * @Groups({"media_object_read"})
      */
     protected $id;
 
@@ -62,6 +86,14 @@ class MediaObject
      * @Groups({"media_object_read"})
      */
     public $contentUrl;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="filename", type="text", length=65535, nullable=false)
+     * @Groups({"media_object_read"})
+     */
+    public $filename;
 
     /**
      * @var File|null
@@ -75,28 +107,26 @@ class MediaObject
      * @var string|null
      *
      * @ORM\Column(nullable=true)
+     * @Groups({"media_object_read"})
      */
     public $filePath;
 
-    /**
-     * @var \Experiments
-     *
-     * @ORM\ManyToOne(targetEntity="Experiments")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="experiment_id", referencedColumnName="id")
-     * })
-     */
-    private $experimentid;
 
-    /**
-     * @var \Users
+      /**
+     * @var string|null
      *
-     * @ORM\ManyToOne(targetEntity="Users")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="userid", referencedColumnName="userid")
-     * })
+     * @ORM\Column(name="experimentid", type="text", length=65535, nullable=false)
+     * @Groups({"media_object_read"})
      */
-    private $userid;
+    public $experimentid;
+
+      /**
+     * @var string|null
+     *
+     * @ORM\Column(name="user_id", type="text", length=65535, nullable=false)
+     * @Groups({"media_object_read"})
+     */
+    public $userid;
 
     public function getId(): ?int
     {
@@ -115,40 +145,44 @@ class MediaObject
         return $this;
     }
 
-    public function getFile(): ?Users
+    public function getFileName(): ?string
     {
-        return $this->file;
+        return $this->filename;
     }
 
-    public function setFile(?Users $file): self
+    public function setFileName(string $filename): self
     {
-        $this->file = $file;
+        $this->filename = $filename;
 
         return $this;
     }
 
-    public function getExperimentId(): ?Experiments
+    public function getExperimentID(): ?string
     {
         return $this->experimentid;
     }
 
-    public function setExperimentId(?Experiments $experimentid): self
+    public function setExperimentID(string $experimentid): self
     {
         $this->experimentid = $experimentid;
 
         return $this;
     }
 
-    public function getUserid(): ?Users
+    public function getUserID(): ?string
     {
         return $this->userid;
     }
 
-    public function setUserid(?Users $userid): self
+    public function setUserID(string $userid): self
     {
         $this->userid = $userid;
 
         return $this;
     }
+
+   
+
+   
     
 }

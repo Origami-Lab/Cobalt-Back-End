@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
@@ -16,7 +17,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *
  * @ORM\Table(name="experiments", indexes={@ORM\Index(name="fk_experiments_users_userid", columns={"userid"})})
  * @ApiResource(
- *     attributes={"pagination_items_per_page"=10}
+ *     attributes={
+ *      "pagination_items_per_page"=10
+ *      }
  * )
  * @ApiFilter(SearchFilter::class, properties={"title": "word_start"})
  * @ApiFilter(DateFilter::class, properties={"startdate"})
