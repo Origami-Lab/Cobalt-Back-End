@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Groups
  *
- * @ORM\Table(name="groups")
+ * @ORM\Table(name="usergroups")
  * @ApiResource
  * @ORM\Entity
  */
