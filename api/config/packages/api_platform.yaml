@@ -1,6 +1,4 @@
 api_platform:
-
-    
     title: OrigamiLab
     version: 1.0.0
     mapping:
@@ -15,13 +13,6 @@ api_platform:
             apiKey:
                 name: Authorization
                 type: header
-    collection:
-        pagination:
-            enabled: true
-            enabled_parameter_name: pagination
-            page_parameter_name: _page
-            partial: false 
-            partial_parameter_name: 'partial'
-            
-
-            
+    defaults:
+       pagination_enabled: true
+       pagination_partial: false

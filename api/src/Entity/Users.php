@@ -5,15 +5,16 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 /**
  * Users
  *
- * @ORM\Table(name="users")
+ * @ORM\Table(name="users", indexes={@ORM\Index(name="email_idx", columns={"email"})})
  * @ApiResource
  * @ORM\Entity
  */
-class Users
+class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @var int
@@ -272,6 +273,60 @@ class Users
         $this->lastLogin = $lastLogin;
 
         return $this;
+    }
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255, nullable=false, unique=true)
+     */
+    private $email;
+    
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+    
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        
+        return $this;
+    }
+    
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+    
+    public function getRoles()
+    {
+        $roles = $this->roles;
+        $roles[] = 'ROLE_SCIENTIST';
+        return array_unique($roles);
+    }
+    
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        
+        return $this;
+    }
+    
+    public function getSalt(){
+        return null;
+    }
+    
+    public function eraseCredentials(){
+        
+    }
+    
+    public function getUsername(){
+        return $this->email;
+    }
+    
+    public function getUserIdentifier(){
+        return $this->email;
     }
 
 }
