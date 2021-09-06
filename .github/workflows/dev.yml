@@ -1,6 +1,9 @@
 name: dev
 on: 
-  workflow_dispatch
+  #workflow_dispatch
+  push:
+    branches:
+      - develop
 
 env:
   IMAGE_PHP: ${{ secrets.DOCKER_REGISTRY }}/cobalt-back-end_php
