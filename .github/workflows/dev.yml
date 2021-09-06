@@ -1,0 +1,47 @@
+name: dev
+on: 
+  workflow_dispatch
+
+jobs:
+  
+  deploy:
+    environment:
+      name: dev 
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    env:
+      PHP_IMAGE: ${{ secrets.DOCKER_REGISTRY }}/cobalt-back-end_php
+      CADDY_IMAGE: ${{ secrets.DOCKER_REGISTRY }}/cobalt-back-end_caddy
+      PWA_IMAGE: ${{ secrets.DOCKER_REGISTRY }}/cobalt-back-end_pwa
+      TAG: latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: config
+        run: |
+          echo ${{ secrets.HELM_VALUES }} > values.yaml
+          docker login ${{ secrets.DOCKER_REGISTRY }} -u nologin -p ${{ secrets.SCW_SECRET_KEY }}
+      
+      - name: build and tag images
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache
+          docker tag cobalt-back-end_php:latest $PHP_IMAGE:$TAG
+          docker tag cobalt-back-end_caddy:latest $PHP_CADDY:$TAG
+          docker tag cobalt-back-end_pwa:latest $PHP_PWA:$TAG
+
+      - name: push images
+        run: |
+          docker push $PHP_IMAGE:$TAG
+          docker push $PHP_CADDY:$TAG
+          docker push $PHP_PWA:$TAG
+
+      - name: deploy
+        uses: wahyd4/kubectl-helm-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: |
+            helm dependency update helm/api-platform
+            helm upgrade cobalt helm/api-platform --namespace=default -f values.yaml 
+
