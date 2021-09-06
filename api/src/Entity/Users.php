@@ -124,6 +124,11 @@ class Users
     {
         return $this->userid;
     }
+    
+    public function getId(): ?int
+    {
+        return $this->userid;
+    }
 
     public function getName(): ?string
     {
@@ -273,5 +278,4 @@ class Users
 
         return $this;
     }
-
 }
