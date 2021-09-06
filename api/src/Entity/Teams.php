@@ -15,6 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Teams
 {
+    public function __construct()
+    {
+        $this->datetime = new \DateTime();
+    }
     /**
      * @var int
      *
@@ -36,7 +40,7 @@ class Teams
      *
      * @ORM\Column(name="datetime", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
      */
-    private $datetime = 'CURRENT_TIMESTAMP';
+    private $datetime;
 
     public function getId(): ?int
     {
