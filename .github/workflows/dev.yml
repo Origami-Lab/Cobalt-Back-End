@@ -49,5 +49,5 @@ jobs:
         with:
           args: |
             helm dependency update helm/api-platform
-            helm upgrade cobalt helm/api-platform --namespace=default -f values.yaml 
+            helm upgrade cobalt-backend helm/api-platform --namespace=default -f values.yaml 
 
