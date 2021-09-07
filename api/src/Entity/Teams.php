@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Dto\TeamsOutput;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Teams
  *
  * @ORM\Table(name="teams")
- * @ApiResource
+ * @ApiResource(output=TeamsOutput::class)
  * @ORM\Entity
  */
 class Teams
@@ -41,6 +43,13 @@ class Teams
      * @ORM\Column(name="datetime", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
      */
     private $datetime;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Users2teams", mappedBy="teams")
+     * @ApiSubresource
+     */
+    public $users2teams;
+    
 
     public function getId(): ?int
     {

@@ -30,17 +30,15 @@ class Users2teams
     /**
      * @var \Teams
      *
-     * @ORM\ManyToOne(targetEntity="Teams")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="teams_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
+     * @ORM\ManyToOne(targetEntity="Teams", inversedBy="teams")
+     * @ORM\JoinColumn(name="teams_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $teams;
 
     /**
      * @var \Users
      *
-     * @ORM\ManyToOne(targetEntity="Users")
+     * @ORM\ManyToOne(targetEntity="Users", inversedBy="users")
      * @ORM\JoinColumn(name="users_id", referencedColumnName="userid", onDelete="CASCADE")
      */
     private $users;
