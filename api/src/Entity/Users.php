@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Dto\UsersOutput;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -11,7 +13,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  * Users
  *
  * @ORM\Table(name="users", indexes={@ORM\Index(name="email_idx", columns={"email"})})
- * @ApiResource
+ * @ApiResource(output=UsersOutput::class)
  * @ORM\Entity
  */
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
@@ -28,6 +30,13 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="email", type="string", length=255, nullable=false, unique=true)
+     */
+    private $email;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
@@ -38,77 +47,13 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(name="password", type="string", length=255, nullable=false)
      */
     private $password;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="mfa_secret", type="string", length=32, nullable=true)
-     */
-    private $mfaSecret;
-
-   
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="token", type="string", length=255, nullable=true)
-     */
-    private $token;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="limit_nb", type="boolean", nullable=false, options={"default"="15"})
-     */
-    private $limitNb = '15';
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="sc_create", type="string", length=1, nullable=false, options={"default"="c"})
-     */
-    private $scCreate = 'c';
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="sc_edit", type="string", length=1, nullable=false, options={"default"="e"})
-     */
-    private $scEdit = 'e';
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="sc_submit", type="string", length=1, nullable=false, options={"default"="s"})
-     */
-    private $scSubmit = 's';
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="sc_todo", type="string", length=1, nullable=false, options={"default"="t"})
-     */
-    private $scTodo = 't';
-
-  
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="inc_files_pdf", type="boolean", nullable=false, options={"default"="1"})
-     */
-    private $incFilesPdf = true;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="pdfa", type="boolean", nullable=false, options={"default"="1"})
-     */
-    private $pdfa = true;
-
     
-
-  
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
+     */
+    private $avatar;
 
     /**
      * @var \DateTime|null
@@ -117,13 +62,34 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $lastLogin;
 
-    
+    /**
+     * @ORM\OneToMany(targetEntity="Users2teams", mappedBy="users")
+     * @ApiSubresource
+     */
+    public $users2teams;
 
 
 
     public function getUserid(): ?int
     {
         return $this->userid;
+    }
+    
+    public function getId(): ?int
+    {
+        return $this->userid;
+    }
+    
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+    
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        
+        return $this;
     }
 
     public function getName(): ?string
@@ -149,119 +115,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    public function getMfaSecret(): ?string
+    
+    public function getAvatar(): ?string
     {
-        return $this->mfaSecret;
+        return $this->avatar;
     }
-
-    public function setMfaSecret(?string $mfaSecret): self
+    
+    public function setAvatar(string $avatar): self
     {
-        $this->mfaSecret = $mfaSecret;
-
+        $this->avatar = $avatar;
+        
         return $this;
     }
-
-   
-
-    public function getToken(): ?string
-    {
-        return $this->token;
-    }
-
-    public function setToken(?string $token): self
-    {
-        $this->token = $token;
-
-        return $this;
-    }
-
-    public function getLimitNb(): ?bool
-    {
-        return $this->limitNb;
-    }
-
-    public function setLimitNb(bool $limitNb): self
-    {
-        $this->limitNb = $limitNb;
-
-        return $this;
-    }
-
-    public function getScCreate(): ?string
-    {
-        return $this->scCreate;
-    }
-
-    public function setScCreate(string $scCreate): self
-    {
-        $this->scCreate = $scCreate;
-
-        return $this;
-    }
-
-    public function getScEdit(): ?string
-    {
-        return $this->scEdit;
-    }
-
-    public function setScEdit(string $scEdit): self
-    {
-        $this->scEdit = $scEdit;
-
-        return $this;
-    }
-
-    public function getScSubmit(): ?string
-    {
-        return $this->scSubmit;
-    }
-
-    public function setScSubmit(string $scSubmit): self
-    {
-        $this->scSubmit = $scSubmit;
-
-        return $this;
-    }
-
-    public function getScTodo(): ?string
-    {
-        return $this->scTodo;
-    }
-
-    public function setScTodo(string $scTodo): self
-    {
-        $this->scTodo = $scTodo;
-
-        return $this;
-    }
-
-
-    public function getIncFilesPdf(): ?bool
-    {
-        return $this->incFilesPdf;
-    }
-
-    public function setIncFilesPdf(bool $incFilesPdf): self
-    {
-        $this->incFilesPdf = $incFilesPdf;
-
-        return $this;
-    }
-
-    public function getPdfa(): ?bool
-    {
-        return $this->pdfa;
-    }
-
-    public function setPdfa(bool $pdfa): self
-    {
-        $this->pdfa = $pdfa;
-
-        return $this;
-    }
-
-   
 
     public function getLastLogin(): ?\DateTimeInterface
     {
@@ -274,26 +139,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=false, unique=true)
-     */
-    private $email;
-    
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-    
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-        
-        return $this;
-    }
-    
     /**
      * @ORM\Column(type="json")
      */
@@ -328,5 +173,4 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(){
         return $this->email;
     }
-
 }

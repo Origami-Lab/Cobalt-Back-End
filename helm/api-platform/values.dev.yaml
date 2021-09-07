@@ -1,0 +1,136 @@
+# Default values for api-platform.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+php:
+  image:
+    repository: "rg.fr-par.scw.cloud/cobalt/cobalt-back-end_php"
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  replicaCount: 1
+  appEnv: dev
+  appDebug: "1"
+  appSecret: "7SATexnkYc6FQPV6tw8TWQj2sfvEcEuT"
+  corsAllowOrigin: "^https?://(.*?.cobalt-dev\\.origamilab\\.ch|localhost)(:[0-9]+)?$"
+  trustedHosts: "^127\\.0\\.0\\.1|localhost|.*\\.cobalt-dev\\.origamilab\\.ch$"
+  trustedProxies:
+    - "127.0.0.1"
+    - "10.0.0.0/8"
+    - "172.16.0.0/12"
+    - "192.168.0.0/16"
+
+pwa:
+  image:
+    repository: "rg.fr-par.scw.cloud/cobalt/cobalt-back-end_pwa"
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+
+caddy:
+  image:
+    repository: "rg.fr-par.scw.cloud/cobalt/cobalt-back-end_caddy"
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  # If you use Mercure, you need the managed or the On Premise version to deploy more than one pod: https://mercure.rocks/docs/hub/cluster
+  replicaCount: 1
+
+# You may prefer using the managed version in production: https://mercure.rocks
+mercure:
+  publicUrl: https://api.cobalt-dev.origamilab.ch/.well-known/mercure
+  # Change me!
+  jwtSecret: "cobalt-jwt-secret"
+  corsAllowedOrigins: "^https?://.*?\\.cobalt-dev\\.origamilab\\.ch$"
+
+# Full configuration: https://github.com/bitnami/charts/tree/master/bitnami/postgresql
+postgresql:
+  enabled: false
+  # If bringing your own PostgreSQL, the full uri to use
+  url: mysql://cobaltdbadmin:vxgy6f7gKJyF4jzA$@51.159.8.77:48835/rdb?serverVersion=8
+  postgresqlUsername: "cobaltdbadmin"
+  postgresqlPassword: "vejTX7d&A#iwD$pHMKyl$"
+  postgresqlDatabase: "rdb"
+  # mysql -h 51.159.8.77 --port 48835 -p -u username
+  # Persistent Volume Storage configuration.
+  # ref: https://kubernetes.io/docs/user-guide/persistent-volumes
+  persistence:
+    enabled: false
+  pullPolicy: IfNotPresent
+  image:
+    repository: bitnami/postgresql
+    tag: 13
+
+imagePullSecrets: [{
+  name: registry-secret
+}]
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "cobalt"
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations: 
+    kubernetes.io/ingress.class: "nginx"    
+    cert-manager.io/issuer: "letsencrypt-prod"
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: api.cobalt-dev.origamilab.ch
+      paths: [{
+        path: /,
+        pathType: Prefix
+      }]
+  tls:
+   - secretName: cobalt-api-tls
+     hosts:
+       - api.cobalt-dev.origamilab.ch
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

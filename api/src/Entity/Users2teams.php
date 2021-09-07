@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="users2teams", indexes={@ORM\Index(name="fk_users2teams_teams_id", columns={"teams_id"}), @ORM\Index(name="fk_users2teams_users_id", columns={"users_id"})})
  * @ApiResource
+ * @ApiFilter(SearchFilter::class, properties={"users":"exact","teams":"exact"})
  * @ORM\Entity
  */
 class Users2teams
@@ -27,20 +30,16 @@ class Users2teams
     /**
      * @var \Teams
      *
-     * @ORM\ManyToOne(targetEntity="Teams")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="teams_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="Teams", inversedBy="teams")
+     * @ORM\JoinColumn(name="teams_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $teams;
 
     /**
      * @var \Users
      *
-     * @ORM\ManyToOne(targetEntity="Users")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="users_id", referencedColumnName="userid")
-     * })
+     * @ORM\ManyToOne(targetEntity="Users", inversedBy="users")
+     * @ORM\JoinColumn(name="users_id", referencedColumnName="userid", onDelete="CASCADE")
      */
     private $users;
 
