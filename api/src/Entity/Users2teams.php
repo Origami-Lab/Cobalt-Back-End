@@ -32,7 +32,7 @@ class Users2teams
      *
      * @ORM\ManyToOne(targetEntity="Teams")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="teams_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="teams_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $teams;
@@ -41,7 +41,7 @@ class Users2teams
      * @var \Users
      *
      * @ORM\ManyToOne(targetEntity="Users")
-     * @ORM\JoinColumn(name="users_id", referencedColumnName="userid")
+     * @ORM\JoinColumn(name="users_id", referencedColumnName="userid", onDelete="CASCADE")
      */
     private $users;
 
