@@ -9,8 +9,8 @@ php:
     # Overrides the image tag whose default is the chart appVersion.
     tag: "latest"
   replicaCount: 1
-  appEnv: prod
-  appDebug: "0"
+  appEnv: dev
+  appDebug: "1"
   appSecret: "7SATexnkYc6FQPV6tw8TWQj2sfvEcEuT"
   corsAllowOrigin: "^https?://(.*?.cobalt-dev\\.origamilab\\.ch|localhost)(:[0-9]+)?$"
   trustedHosts: "^127\\.0\\.0\\.1|localhost|.*\\.cobalt-dev\\.origamilab\\.ch$"
