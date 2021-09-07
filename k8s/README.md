@@ -57,7 +57,7 @@ helm install cobalt-back-end helm/api-platform --namespace=default -f helm/api-p
 helm upgrade cobalt-back-end helm/api-platform --namespace=default -f helm/api-platform/values.dev.yaml
 
 # 4. Uninstall
-helm uninstall cobalt
+helm uninstall cobalt-back-end
 ```
 
 ## Setup load balancer
