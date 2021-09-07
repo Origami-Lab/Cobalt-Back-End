@@ -23,6 +23,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Config
+        env:
+          HELM_VALUES: ${{ secrets.HELM_VALUES }}
+        run: |
+          echo $HELM_VALUES >> ./helm/api-platform/values.dev.yaml
+
       - name: Build images
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache php
