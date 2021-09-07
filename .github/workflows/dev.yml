@@ -31,9 +31,8 @@ jobs:
 
       - name: Build images
         run: |
-          docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache php
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache
           docker tag cobalt-back-end_php:latest $IMAGE_PHP:$TAG
-          caddy and pwa are never changed
           docker tag cobalt-back-end_caddy:latest $IMAGE_CADDY:$TAG
           docker tag cobalt-back-end_pwa:latest $IMAGE_PWA:$TAG
 
