@@ -48,14 +48,13 @@ Copy `helm/api-platform/values.yaml` to `helm/api-platform/values-dev.yaml` and 
 
 ```bash
 # 1. Update dependency
-cd helm/api-platform
-helm dependency update
+helm dependency update helm/api-platform
 
 # 2. Deploy
-helm install cobalt helm/api-platform --namespace=default -f helm/api-platform/values-dev.yaml
+helm install cobalt-back-end helm/api-platform --namespace=default -f helm/api-platform/values.dev.yaml
 
 # 3. Upgrade
-helm upgrade cobalt helm/api-platform --namespace=default -f helm/api-platform/values-dev.yaml
+helm upgrade cobalt-back-end helm/api-platform --namespace=default -f helm/api-platform/values.dev.yaml
 
 # 4. Uninstall
 helm uninstall cobalt
@@ -105,7 +104,7 @@ kubectl apply -f k8s/production-issuer.yaml
 
 The Let’s Encrypt production issuer has very strict rate limits. When you are experimenting and testing, it is very easy to hit those limits, and confuse rate limiting with errors in configuration or operation.
 
-#### Update Ingress configration in helm/api-platform/values-dev.yaml with staging-issuer
+#### Update Ingress configration in helm/api-platform/values.dev.yaml with staging-issuer and test it first and then change to production-issuer
 
 ```yaml
 annotations:
@@ -121,5 +120,5 @@ tls:
 #### Update deployment
 
 ```bash
-helm upgrade cobalt helm/api-platform --namespace=default -f helm/api-platform/values-dev.yaml
+helm upgrade cobalt-back-end helm/api-platform --namespace=default -f helm/api-platform/values.dev.yaml
 ```
