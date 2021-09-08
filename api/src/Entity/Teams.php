@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Dto\TeamsOutput;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +14,20 @@ use Doctrine\ORM\Mapping as ORM;
  * Teams
  *
  * @ORM\Table(name="teams")
- * @ApiResource(output=TeamsOutput::class)
+ * @ApiResource(
+ *     output=TeamsOutput::class,
+ *     attributes={"security"="is_granted('IS_AUTHENTICATED_FULLY')"},
+ *     collectionOperations={
+ *          "get",
+ *          "post"
+ *     },
+ *     itemOperations={ 
+ *         "get" = { "security" = "is_granted('IS_AUTHENTICATED_FULLY')" },
+ *         "put" = { "security" = "is_granted('ROLE_ADMIN')" },
+ *         "delete" = { "security" = "is_granted('ROLE_ADMIN')" } 
+ *     }
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"id","datetime"})
  * @ORM\Entity
  */
 class Teams
@@ -48,7 +63,7 @@ class Teams
      * @ORM\OneToMany(targetEntity="Users2teams", mappedBy="teams")
      * @ApiSubresource
      */
-    public $users2teams;
+    private $users2teams;
     
 
     public function getId(): ?int
@@ -78,5 +93,9 @@ class Teams
         $this->datetime = $datetime;
 
         return $this;
+    }
+    
+    public function getUsers2teams() {
+        return $this->users2teams;
     }
 }

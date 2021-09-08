@@ -130,6 +130,16 @@ spec:
                 secretKeyRef:
                   name: {{ include "api-platform.fullname" . }}
                   key: mercure-jwt-secret
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "api-platform.fullname" . }}
+                  key: jwt-secret-key
+            - name: JWT_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "api-platform.fullname" . }}
+                  key: jwt-public-key
           volumeMounts:
             - mountPath: /var/run/php
               name: php-socket

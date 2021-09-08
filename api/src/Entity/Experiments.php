@@ -16,17 +16,17 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  * Experiments
  *
  * @ORM\Table(name="experiments", indexes={@ORM\Index(name="fk_experiments_users_userid", columns={"userid"})})
- * @ApiResource(
- *     attributes={
- *      "pagination_items_per_page"=10
- *      }
- * )
- * @ApiFilter(SearchFilter::class, properties={"title": "word_start"})
- * @ApiFilter(DateFilter::class, properties={"startdate"})
+ * @ApiResource
+ * @ApiFilter(SearchFilter::class, properties={"userid":"exact","title": "partial"})
+ * @ApiFilter(DateFilter::class, properties={"startdate", "duedate"})
  * @ORM\Entity
  */
 class Experiments
 {
+    public function __construct()
+    {
+        $this->datetime = new \DateTime();
+    }
     /**
      * @var int
      *
@@ -79,22 +79,13 @@ class Experiments
      *
      * @ORM\Column(name="datetime", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
      */
-    private $datetime = 'CURRENT_TIMESTAMP';
-
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="lastchange", type="datetime", nullable=true, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $lastchange = 'CURRENT_TIMESTAMP';
+    private $datetime;
 
     /**
      * @var \Users
      *
      * @ORM\ManyToOne(targetEntity="Users")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="userid", referencedColumnName="userid")
-     * })
+     * @ORM\JoinColumn(name="userid", referencedColumnName="userid")
      */
     private $userid;
     
@@ -172,18 +163,6 @@ class Experiments
     public function setDatetime(\DateTimeInterface $datetime): self
     {
         $this->datetime = $datetime;
-
-        return $this;
-    }
-
-    public function getLastchange(): ?\DateTimeInterface
-    {
-        return $this->lastchange;
-    }
-
-    public function setLastchange(?\DateTimeInterface $lastchange): self
-    {
-        $this->lastchange = $lastchange;
 
         return $this;
     }

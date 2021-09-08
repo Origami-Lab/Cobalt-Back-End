@@ -3,10 +3,19 @@ namespace App\DataTransformer;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Dto\UsersOutput;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Users;
+use App\Entity\Experiments;
 
 final class UsersOutputDataTransformer implements DataTransformerInterface
 {
+    
+    private $entityManager;
+    
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     /**
      * {@inheritdoc}
      */
@@ -17,19 +26,26 @@ final class UsersOutputDataTransformer implements DataTransformerInterface
         $output->name = $data->getName();
         $output->email = $data->getEmail();
         $output->avatar = $data->getAvatar();
-        $output->users2teams = $data->users2teams;
+        $output->users2teams = $data->getUsers2teams();
         $teams = [];
-        if(!empty($data->users2teams)){
-            foreach($data->users2teams as $users2teams){
+        if(!empty($output->users2teams)){
+            foreach($output->users2teams as $users2teams){
                 $team =  $users2teams->getTeams();
                 $teamData = [
                     'id' => $team->getId(),
-                    'name' => $team->getName()
+                    'name' => $team->getName(),
+                    'users2teams_id' => $users2teams->getId()
                 ];
                 $teams[] = $teamData;
             }
         }
         $output->teams = $teams;
+        $totalExperiments = 0;
+        $experiments = $data->getExperiments();
+        foreach($experiments as $experiment){
+            $totalExperiments++;
+        }
+        $output->totalExperiments = $totalExperiments;
         return $output;
     }
 
