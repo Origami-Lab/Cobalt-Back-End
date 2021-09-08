@@ -6,8 +6,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
-use App\Entity\Teams;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Teams;
+use App\Entity\Experiments;
 
 final class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
@@ -37,21 +38,34 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
             return;
         }
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        if(Teams::class === $resourceClass){
-            $teamIds = [];
-            $userId = $user->getId();
+        $userId = $user->getId();
+        if(Teams::class === $resourceClass || Experiments::class === $resourceClass){
+            $teamIds = $userIds = [];
             $users2teams = $this->entityManager->getRepository('App\Entity\Users2teams')->findBy(array('users' => $userId));
             if($users2teams){
                 foreach($users2teams as $users2team){
                     $teamIds[] = $users2team->getTeams()->getId();
+                    $userIds[] = $users2team->getUsers()->getId();
                 }
             }
+            $teamIds = array_unique($teamIds);
+            $userIds = array_unique($userIds);
             if($teamIds){
                 $teamIds = implode(',',$teamIds);
             }else{
                 $teamIds = 0;
             }
-            $queryBuilder->andWhere(sprintf('%s.id IN (%s)', $rootAlias, $teamIds));
+            if($userIds){
+                $userIds = implode(',',$userIds);
+            }else{
+                $userIds = 0;
+            }
+            if(Teams::class === $resourceClass){
+                $queryBuilder->andWhere(sprintf('%s.id IN (%s)', $rootAlias, $teamIds));
+            }
+            if(Experiments::class === $resourceClass){
+                $queryBuilder->andWhere(sprintf('%s.userid IN (%s)', $rootAlias, $userIds));
+            }
         }
     }
 }

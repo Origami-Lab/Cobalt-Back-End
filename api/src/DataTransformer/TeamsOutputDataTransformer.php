@@ -15,11 +15,12 @@ final class TeamsOutputDataTransformer implements DataTransformerInterface
         $output = new TeamsOutput();
         $output->name = $data->getName();
         $output->id = $data->getId();
-        $output->users2teams = $data->users2teams;
+        $output->users2teams = $data->getUsers2teams();
         $users = [];
-        if(!empty($data->users2teams)){
-            foreach($data->users2teams as $users2teams){
+        if(!empty($output->users2teams)){
+            foreach($output->users2teams as $users2teams){
                 $user =  $users2teams->getUsers();
+                $user->users2teams_id = $users2teams->getId();
                 $users[] = $user;
             }
         }

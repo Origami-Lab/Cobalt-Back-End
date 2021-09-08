@@ -26,4 +26,8 @@ final class UsersOutput {
      * @var Array|null
      */
     public $teams;
+    /**
+     * @var int
+     */
+    public $totalExperiments;
 }

@@ -19,6 +19,9 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+    App\OpenApi\JwtDecorator:
+        decorates: 'api_platform.openapi.factory'
+        arguments: ['@.inner']
     acme_api.event.authentication_success_listener:
         class: App\EventListener\AuthenticationSuccessListener
         tags:

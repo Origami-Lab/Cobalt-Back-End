@@ -4,20 +4,43 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Dto\UsersOutput;
-
+use App\Dto\UsersInput;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Users
  *
  * @ORM\Table(name="users", indexes={@ORM\Index(name="email_idx", columns={"email"})})
- * @ApiResource(output=UsersOutput::class)
+ * @ApiResource(
+ *     output=UsersOutput::class,
+ *     input=UsersInput::class,
+ *     attributes={"security"="is_granted('IS_AUTHENTICATED_FULLY')"},
+ *     collectionOperations={
+ *          "get",
+ *          "post" = { "security_post_denormalize" = "is_granted('ROLE_ADMIN')" }
+ *     },
+ *     itemOperations={ 
+ *         "get" = { "security" = "is_granted('IS_AUTHENTICATED_FULLY')" },
+ *         "put" = { "security" = "is_granted('ROLE_ADMIN')" },
+ *         "delete" = { "security" = "is_granted('ROLE_ADMIN')" } 
+ *     }
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"userid","name"})
+ * @ApiFilter(SearchFilter::class, properties={"name": "partial","email": "partial"})
  * @ORM\Entity
  */
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public function __construct()
+    {
+        $this->experiments = new ArrayCollection();
+    }
     /**
      * @var int
      *
@@ -66,7 +89,12 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity="Users2teams", mappedBy="users")
      * @ApiSubresource
      */
-    public $users2teams;
+    private $users2teams;
+    
+    /** 
+     * @ORM\OneToMany(targetEntity="Experiments", mappedBy="userid")
+     */
+    private $experiments;
 
 
 
@@ -140,7 +168,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(name="roles", type="json", nullable=true)
      */
     private $roles = [];
     
@@ -172,5 +200,13 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     
     public function getUserIdentifier(){
         return $this->email;
+    }
+    
+    public function getExperiments() {
+        return $this->experiments; 
+    }
+    
+    public function getUsers2teams() {
+        return $this->users2teams;
     }
 }
