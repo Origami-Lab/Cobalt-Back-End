@@ -51,10 +51,10 @@ Copy `helm/api-platform/values.yaml` to `helm/api-platform/values-dev.yaml` and 
 helm dependency update helm/api-platform
 
 # 2. Deploy
-helm install cobalt-back-end helm/api-platform --namespace=default -f helm/api-platform/values.dev.yaml
+helm install cobalt-back-end ./helm/api-platform --namespace=default -f helm/api-platform/values.dev.yaml
 
 # 3. Upgrade
-helm upgrade cobalt-back-end helm/api-platform --namespace=default -f helm/api-platform/values.dev.yaml
+helm upgrade cobalt-back-end ./helm/api-platform --namespace=default -f helm/api-platform/values.dev.yaml
 
 # 4. Uninstall
 helm uninstall cobalt-back-end

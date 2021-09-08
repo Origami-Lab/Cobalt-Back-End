@@ -140,6 +140,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "api-platform.fullname" . }}
                   key: jwt-public-key
+            - name: JWT_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "api-platform.fullname" . }}
+                  key: jwt-passphrase
           volumeMounts:
             - mountPath: /var/run/php
               name: php-socket
