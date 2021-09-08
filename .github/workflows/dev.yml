@@ -27,7 +27,8 @@ jobs:
         env:
           HELM_VALUES: ${{ secrets.HELM_VALUES }}
         run: |
-          echo $HELM_VALUES > ./helm/api-platform/values.dev.yaml
+          echo $HELM_VALUES > ./helm/api-platform/values.yaml
+          cat ./helm/api-platform/values.yaml
 
       - name: Build images
         run: |
@@ -51,5 +52,5 @@ jobs:
           args: |
             helm dependency update helm/api-platform
             helm uninstall cobalt-back-end
-            helm install cobalt-back-end ./helm/api-platform --namespace=default -f ./helm/api-platform/values.dev.yaml
+            helm install cobalt-back-end ./helm/api-platform --namespace=default
 
