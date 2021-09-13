@@ -7,8 +7,8 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Dto\TeamsOutput;
-
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Teams
@@ -35,6 +35,7 @@ class Teams
     public function __construct()
     {
         $this->datetime = new \DateTime();
+        $this->users2teams = new ArrayCollection();
     }
     /**
      * @var int

@@ -48,13 +48,10 @@ final class NewTeamsSubscriber implements EventSubscriberInterface
         if (!$user = $token->getUser()) {
             return ;
         }
-        $roles = $user->getRoles();
-        if($roles && !in_array('ROLE_ADMIN', $roles)){
-            $users2teams = new Users2teams();
-            $users2teams->setTeams($team);
-            $users2teams->setUsers($user);
-            $this->entityManager->persist($users2teams);
-            $this->entityManager->flush();
-        }
+        $users2teams = new Users2teams();
+        $users2teams->setTeams($team);
+        $users2teams->setUsers($user);
+        $this->entityManager->persist($users2teams);
+        $this->entityManager->flush();
     }
 }

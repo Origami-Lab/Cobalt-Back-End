@@ -21,6 +21,10 @@ final class UsersOutput {
     /**
      * @var Array|null
      */
+    public $roles;
+    /**
+     * @var Array|null
+     */
     public $users2teams;
     /**
      * @var Array|null

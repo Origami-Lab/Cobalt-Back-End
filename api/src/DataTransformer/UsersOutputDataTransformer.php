@@ -26,16 +26,13 @@ final class UsersOutputDataTransformer implements DataTransformerInterface
         $output->name = $data->getName();
         $output->email = $data->getEmail();
         $output->avatar = $data->getAvatar();
+        $output->roles = $data->getRoles();
         $output->users2teams = $data->getUsers2teams();
         $teams = [];
         if(!empty($output->users2teams)){
             foreach($output->users2teams as $users2teams){
                 $team =  $users2teams->getTeams();
-                $teamUsers2Teams = $team->getUsers2teams();
-                $totalUsers = 0;
-                if($teamUsers2Teams){
-                    $totalUsers = count($teamUsers2Teams);
-                }
+                $totalUsers = $team->getUsers2teams()->count();
                 $teamData = [
                     'id' => $team->getId(),
                     'name' => $team->getName(),
@@ -46,11 +43,7 @@ final class UsersOutputDataTransformer implements DataTransformerInterface
             }
         }
         $output->teams = $teams;
-        $totalExperiments = 0;
-        $experiments = $data->getExperiments();
-        if($experiments){
-            $totalExperiments = count($experiments);
-        }
+        $totalExperiments = $data->getExperiments()->count();
         $output->totalExperiments = $totalExperiments;
         return $output;
     }
