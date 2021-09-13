@@ -39,6 +39,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public function __construct()
     {
+        $this->users2teams = new ArrayCollection();
         $this->experiments = new ArrayCollection();
     }
     /**

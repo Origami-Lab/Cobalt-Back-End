@@ -33,7 +33,10 @@ final class AssignOwnerSubscriber implements EventSubscriberInterface
         $record = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!method_exists($record, 'setUserid') || !method_exists($record, 'getUserid') || Request::METHOD_POST !== $method) {
+        if (Request::METHOD_POST !== $method) {
+            return;
+        }
+        if(!is_object($record) || !method_exists($record, 'setUserid') || !method_exists($record, 'getUserid') ){
             return;
         }
         if (!$token = $this->tokenStorage->getToken()) {
