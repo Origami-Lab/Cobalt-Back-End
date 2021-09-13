@@ -130,24 +130,24 @@ class Experiments
         return $this;
     }
 
-    public function getStartDate(): ?\DateTimeInterface
+    public function getStartdate(): ?\DateTimeInterface
     {
         return $this->startdate;
     }
 
-    public function setStartDate(?\DateTimeInterface $startdate): self
+    public function setStartdate(?\DateTimeInterface $startdate): self
     {
         $this->startdate = $startdate;
 
         return $this;
     }
 
-    public function getDueDate(): ?\DateTimeInterface
+    public function getDuedate(): ?\DateTimeInterface
     {
         return $this->duedate;
     }
 
-    public function setDueDate(?\DateTimeInterface $duedate): self
+    public function setDuedate(?\DateTimeInterface $duedate): self
     {
         $this->duedate = $duedate;
 
