@@ -84,7 +84,7 @@ class Experiments
     /**
      * @var \Users
      *
-     * @ORM\ManyToOne(targetEntity="Users")
+     * @ORM\ManyToOne(targetEntity="Users", inversedBy="experiments")
      * @ORM\JoinColumn(name="userid", referencedColumnName="userid")
      */
     private $userid;

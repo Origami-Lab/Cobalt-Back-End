@@ -57,7 +57,11 @@ final class AssignOwnerSubscriber implements EventSubscriberInterface
         $userId = $user->getUserid();
         if($userId){
             if(!$isAdmin || ($isAdmin && !$record->getUserid())){
-                $record->setUserid($user);
+                if(!method_exists($record, 'isStringUserid')){
+                    $record->setUserid($user);
+                }else{
+                    $record->setUserid($userId);
+                }
                 $this->entityManager->persist($record);
                 $this->entityManager->flush();
             }
