@@ -33,11 +33,22 @@ final class UsersOutputDataTransformer implements DataTransformerInterface
             foreach($output->users2teams as $users2teams){
                 $team =  $users2teams->getTeams();
                 $totalUsers = $team->getUsers2teams()->count();
+                $userAvatars = [];
+                foreach($team->getUsers2teams() as $temp){
+                    $avatar =  $temp->getUsers()->getAvatar();
+                    if($avatar){
+                        $userAvatars[] = $avatar;
+                    }
+                    if(count($userAvatars) == 3){
+                        break;
+                    }
+                }
                 $teamData = [
                     'id' => $team->getId(),
                     'name' => $team->getName(),
                     'users2teams_id' => $users2teams->getId(),
-                    'totalUsers' => $totalUsers
+                    'totalUsers' => $totalUsers,
+                    'userAvatars' => $userAvatars
                 ];
                 $teams[] = $teamData;
             }
