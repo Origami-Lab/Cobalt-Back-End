@@ -46,7 +46,7 @@ final class UsersOutputDataTransformer implements DataTransformerInterface
                 $teamData = [
                     'id' => $team->getId(),
                     'name' => $team->getName(),
-                    'users2teams_id' => $users2teams->getId(),
+                    'users2teamsId' => $users2teams->getId(),
                     'totalUsers' => $totalUsers,
                     'userAvatars' => $userAvatars
                 ];
