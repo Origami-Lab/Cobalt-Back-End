@@ -87,13 +87,13 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private $lastLogin;
 
     /**
-     * @ORM\OneToMany(targetEntity="Users2teams", mappedBy="users")
+     * @ORM\OneToMany(targetEntity="Users2teams", mappedBy="users", fetch="EAGER")
      * @ApiSubresource
      */
     private $users2teams;
     
     /** 
-     * @ORM\OneToMany(targetEntity="Experiments", mappedBy="userid")
+     * @ORM\OneToMany(targetEntity="Experiments", mappedBy="userid", fetch="EAGER")
      */
     private $experiments;
 

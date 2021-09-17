@@ -61,7 +61,7 @@ class Teams
     private $datetime;
     
     /**
-     * @ORM\OneToMany(targetEntity="Users2teams", mappedBy="teams")
+     * @ORM\OneToMany(targetEntity="Users2teams", mappedBy="teams", fetch="EAGER")
      * @ApiSubresource
      */
     private $users2teams;

@@ -40,7 +40,7 @@ class Users2teams
     /**
      * @var \Teams
      *
-     * @ORM\ManyToOne(targetEntity="Teams", inversedBy="users2teams")
+     * @ORM\ManyToOne(targetEntity="Teams", inversedBy="users2teams", fetch="EAGER")
      * @ORM\JoinColumn(name="teams_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $teams;
@@ -48,7 +48,7 @@ class Users2teams
     /**
      * @var \Users
      *
-     * @ORM\ManyToOne(targetEntity="Users", inversedBy="users2teams")
+     * @ORM\ManyToOne(targetEntity="Users", inversedBy="users2teams", fetch="EAGER")
      * @ORM\JoinColumn(name="users_id", referencedColumnName="userid", onDelete="CASCADE")
      */
     private $users;
