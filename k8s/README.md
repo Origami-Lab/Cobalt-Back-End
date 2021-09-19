@@ -6,12 +6,23 @@
 -   Create a K8S cluster with Nginx Ingress
 -   Download kubernetes configfile
 -   Create a container registry
+-   Create a storage block volume and attach to K8S node
 
 ## Create a database instance of MySQL8
 
 Create a MySQL 8 instance
 
 ## Build and deploy api-platform
+
+### Docker registry
+
+-   Create a docker registry
+
+-   Create a service pull secret (this secret will be used to pull docker images in Helm)
+
+```bash
+kubectl create secret docker-registry registry-secret --docker-server=rg.fr-par.scw.cloud --docker-username=cobalt --docker-password=$SCW_SECRET_KEY --docker-email=devops@origamilab.ch
+```
 
 ### Build images
 
@@ -85,15 +96,6 @@ kubectl apply -f k8s/lb.yaml
 
 # 2. Update IP
 kubectl patch svc nginx-ingress --type merge --patch '{"spec":{"loadBalancerIP": "<IP>","type":"LoadBalancer"}}
-```
-
-## Setup persistent volume
-
-Create a new Block strorage volume and attach to cluster node (25GB)
-
-```bash
-kubectl apply -f k8s/pv.yml
-kubectl apply -f k8s/pvc.yml
 ```
 
 ## Setup SSL
