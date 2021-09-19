@@ -1,6 +1,6 @@
 /helm/api-platform/charts/*
 !/helm/api-platform/charts/.gitignore
-/helm/api-platform/values.dev.yaml
+/helm/api-platform/values.*.yaml
 /docker-compose.override.yaml
 /.history
 /database

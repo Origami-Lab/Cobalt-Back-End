@@ -38,7 +38,7 @@ docker push rg.fr-par.scw.cloud/cobalt/cobalt-back-end_pwa:latest
 
 ### Config Helm chart
 
-Copy `helm/api-platform/values.yaml` to `helm/api-platform/values-dev.yaml` and update it
+Copy `helm/api-platform/values.yaml` to `helm/api-platform/values.dev.yaml` and update it
 
 -   Image repository
 -   Ingress host
@@ -85,6 +85,15 @@ kubectl apply -f k8s/lb.yaml
 
 # 2. Update IP
 kubectl patch svc nginx-ingress --type merge --patch '{"spec":{"loadBalancerIP": "<IP>","type":"LoadBalancer"}}
+```
+
+## Setup persistent volume
+
+Create a new Block strorage volume and attach to cluster node (25GB)
+
+```bash
+kubectl apply -f k8s/pv.yml
+kubectl apply -f k8s/pvc.yml
 ```
 
 ## Setup SSL
