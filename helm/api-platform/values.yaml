@@ -131,3 +131,11 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+persistenVolume:
+  name: ""
+  volumeId: ""
+  driver: ""
+  accessModes: ""
+  storageClassName: ""
+  capacity: ""

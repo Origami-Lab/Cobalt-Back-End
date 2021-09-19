@@ -6,12 +6,23 @@
 -   Create a K8S cluster with Nginx Ingress
 -   Download kubernetes configfile
 -   Create a container registry
+-   Create a storage block volume and attach to K8S node
 
 ## Create a database instance of MySQL8
 
 Create a MySQL 8 instance
 
 ## Build and deploy api-platform
+
+### Docker registry
+
+-   Create a docker registry
+
+-   Create a service pull secret (this secret will be used to pull docker images in Helm)
+
+```bash
+kubectl create secret docker-registry registry-secret --docker-server=rg.fr-par.scw.cloud --docker-username=cobalt --docker-password=$SCW_SECRET_KEY --docker-email=devops@origamilab.ch
+```
 
 ### Build images
 
@@ -81,19 +92,10 @@ curl -X POST "https://api.scaleway.com/lb/v1/regions/$SCW_DEFAULT_REGION/ips" -H
 
 ```bash
 # 1. Create service
-kubectl apply -f k8s/lb.yaml
+kubectl apply -f k8s/lb.yml
 
 # 2. Update IP
-kubectl patch svc nginx-ingress --type merge --patch '{"spec":{"loadBalancerIP": "<IP>","type":"LoadBalancer"}}
-```
-
-## Setup persistent volume
-
-Create a new Block strorage volume and attach to cluster node (25GB)
-
-```bash
-kubectl apply -f k8s/pv.yml
-kubectl apply -f k8s/pvc.yml
+kubectl patch svc nginx-ingress -n kube-system --type merge --patch '{"spec":{"loadBalancerIP": "<IP>","type":"LoadBalancer"}}
 ```
 
 ## Setup SSL
@@ -105,8 +107,8 @@ Reference https://cert-manager.io/docs/tutorials/acme/ingress
 ```bash
 kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.5.3/cert-manager.yaml
 
-kubectl apply -f k8s/staging-issuer.yaml
-kubectl apply -f k8s/production-issuer.yaml
+kubectl apply -f k8s/staging-issuer.yml
+kubectl apply -f k8s/production-issuer.yml
 ```
 
 ### Issue certificate using Staging API
