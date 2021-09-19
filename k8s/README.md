@@ -92,10 +92,10 @@ curl -X POST "https://api.scaleway.com/lb/v1/regions/$SCW_DEFAULT_REGION/ips" -H
 
 ```bash
 # 1. Create service
-kubectl apply -f k8s/lb.yaml
+kubectl apply -f k8s/lb.yml
 
 # 2. Update IP
-kubectl patch svc nginx-ingress --type merge --patch '{"spec":{"loadBalancerIP": "<IP>","type":"LoadBalancer"}}
+kubectl patch svc nginx-ingress -n kube-system --type merge --patch '{"spec":{"loadBalancerIP": "<IP>","type":"LoadBalancer"}}
 ```
 
 ## Setup SSL
@@ -107,8 +107,8 @@ Reference https://cert-manager.io/docs/tutorials/acme/ingress
 ```bash
 kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.5.3/cert-manager.yaml
 
-kubectl apply -f k8s/staging-issuer.yaml
-kubectl apply -f k8s/production-issuer.yaml
+kubectl apply -f k8s/staging-issuer.yml
+kubectl apply -f k8s/production-issuer.yml
 ```
 
 ### Issue certificate using Staging API
