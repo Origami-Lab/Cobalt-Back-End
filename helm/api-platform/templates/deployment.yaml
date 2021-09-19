@@ -58,6 +58,8 @@ spec:
           volumeMounts:
             - mountPath: /var/run/php
               name: php-socket
+            - mountPath: /srv/api/public/media
+              name: php-public-media
           lifecycle:
             preStop:
               exec:
@@ -115,6 +117,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "api-platform.fullname" . }}
                   key: database-url
+            - name: VICH_UPLOADER_URI_PREFIX
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api-platform.fullname" . }}
+                  key: vick-uploader-uri-prefix
             - name: MERCURE_URL
               valueFrom:
                 configMapKeyRef:
@@ -148,6 +155,8 @@ spec:
           volumeMounts:
             - mountPath: /var/run/php
               name: php-socket
+            - mountPath: /srv/api/public/media
+              name: php-public-media
           lifecycle:
             preStop:
               exec:
@@ -169,6 +178,9 @@ spec:
       volumes:
       - name: php-socket
         emptyDir: {}
+      - name: php-public-media
+        persistentVolumeClaim:
+          claimName: php-public-media-pvc
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

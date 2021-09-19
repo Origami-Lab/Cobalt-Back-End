@@ -23,6 +23,7 @@ php:
   jwtPassphrase: ""
   jwtPublicKey: "" 
   jwtSecretKey: ""
+  vickUploaderUriPrefix: ""
 pwa:
   image:
     repository: "chart-example.local/api-platform/pwa"
