@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Dto\ExperimentsOutput;
 
 
 
@@ -16,8 +18,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  * Experiments
  *
  * @ORM\Table(name="experiments", indexes={@ORM\Index(name="fk_experiments_users_userid", columns={"userid"})})
- * @ApiResource
- * @ApiFilter(SearchFilter::class, properties={"userid":"exact","title": "partial"})
+ * @ApiResource(
+ *     output=ExperimentsOutput::class
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"userid":"exact","title": "ipartial", "experiments2labels.labels":"exact"})
  * @ApiFilter(DateFilter::class, properties={"startdate", "duedate"})
  * @ORM\Entity
  */
@@ -26,6 +30,7 @@ class Experiments
     public function __construct()
     {
         $this->datetime = new \DateTime();
+        $this->experiments2labels = new ArrayCollection();
     }
     /**
      * @var int
@@ -88,6 +93,12 @@ class Experiments
      * @ORM\JoinColumn(name="userid", referencedColumnName="userid")
      */
     private $userid;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Experiments2labels", mappedBy="experiments", fetch="EAGER")
+     * @ApiSubresource
+     */
+    private $experiments2labels;
     
 
     public function getId(): ?int
@@ -178,6 +189,9 @@ class Experiments
 
         return $this;
     }
-
-
+    
+    public function getExperiments2labels()
+    {
+        return $this->experiments2labels;
+    }
 }
