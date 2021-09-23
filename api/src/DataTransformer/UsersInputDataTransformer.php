@@ -33,7 +33,9 @@ final class UsersInputDataTransformer implements DataTransformerInterface
         }
         $user->setRoles($roles);
         $user->setName($data->name);
-        $user->setAvatar($data->avatar);
+        if($data->avatar){
+            $user->setAvatar($data->avatar);
+        }
         $password = $data->password;
         $password = $this->passwordHasher->hashPassword($user, $password);
         $user->setPassword($password);

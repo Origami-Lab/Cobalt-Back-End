@@ -33,21 +33,29 @@ final class AssignOwnerSubscriber implements EventSubscriberInterface
         $record = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (Request::METHOD_POST !== $method) {
+        if (Request::METHOD_POST !== $method || !is_object($record)) {
             return;
         }
-        if(!is_object($record) || !method_exists($record, 'setUserid') || !method_exists($record, 'getUserid') ){
-            return;
-        }
+        
         if (!$token = $this->tokenStorage->getToken()) {
-            return ;
+            return;
         }
         
         if (!$token->isAuthenticated()) {
-            return ;
+            return;
         }
         if (!$user = $token->getUser()) {
-            return ;
+            return;
+        }
+        if(method_exists($record, 'setOwner')){
+            $userId = $user->getUserid();
+            $record->setOwner($userId);
+            $this->entityManager->persist($record);
+            $this->entityManager->flush();
+            return;
+        }
+        if(!method_exists($record, 'setUserid') || !method_exists($record, 'getUserid') ){
+            return;
         }
         $roles = $user->getRoles();
         $isAdmin = 0;
