@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Filter\QueryFilter;
 /**
  * Users
  *
@@ -33,6 +34,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * )
  * @ApiFilter(OrderFilter::class, properties={"userid","name"})
  * @ApiFilter(SearchFilter::class, properties={"name": "partial","email": "partial"})
+ * @ApiFilter(QueryFilter::class, properties={"name", "email"}, arguments={"searchParameterName"="query"})
  * @ORM\Entity
  */
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
