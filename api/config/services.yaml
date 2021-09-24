@@ -26,5 +26,8 @@ services:
         class: App\EventListener\AuthenticationSuccessListener
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+    App\Filter\QueryFilter:
+        arguments:
+            $searchParameterName: 'query'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
