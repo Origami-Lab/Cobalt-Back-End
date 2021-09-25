@@ -7,7 +7,7 @@ final class UsersOutput {
      */
     public $userid;
     /**
-     * @var string
+     * @var string|null
      */
     public $name;
     /**
@@ -22,6 +22,10 @@ final class UsersOutput {
      * @var Array|null
      */
     public $roles;
+    /**
+     * @var string|null
+     */
+    public $lastActivity;
     /**
      * @var Array|null
      */

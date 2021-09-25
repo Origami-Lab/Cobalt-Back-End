@@ -32,7 +32,9 @@ final class UsersInputDataTransformer implements DataTransformerInterface
             $roles = ['ROLE_SCIENTIST'];
         }
         $user->setRoles($roles);
-        $user->setName($data->name);
+        if($data->name){
+            $user->setName($data->name);
+        }
         if($data->avatar){
             $user->setAvatar($data->avatar);
         }

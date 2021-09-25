@@ -34,7 +34,7 @@ use App\Filter\QueryFilter;
  * )
  * @ApiFilter(OrderFilter::class, properties={"userid","name"})
  * @ApiFilter(SearchFilter::class, properties={"name": "partial","email": "partial"})
- * @ApiFilter(QueryFilter::class, properties={"name", "email"}, arguments={"searchParameterName"="query"})
+ * @ApiFilter(QueryFilter::class, properties={"name", "email", "roles"}, arguments={"searchParameterName"="query"})
  * @ORM\Entity
  */
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
@@ -63,7 +63,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
@@ -178,7 +178,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles()
     {
         $roles = $this->roles;
-        $roles[] = 'ROLE_SCIENTIST';
+        if(!$roles){
+            $roles[] = 'ROLE_SCIENTIST';
+        }
         return array_unique($roles);
     }
     

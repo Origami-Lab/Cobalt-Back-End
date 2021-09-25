@@ -14,7 +14,6 @@ use ApiPlatform\Core\Exception\InvalidArgumentException;
 /**
  * Selects entities where each search term is found somewhere
  * in at least one of the specified properties.
- * Search terms must be separated by spaces.
  * Search is case insensitive.
  * All specified properties type must be string.
  * @package App\Filter
