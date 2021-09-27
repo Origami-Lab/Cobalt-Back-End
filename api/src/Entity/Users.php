@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Filter\QueryFilter;
+use App\Filter\RoleFilter;
 /**
  * Users
  *
@@ -35,6 +36,7 @@ use App\Filter\QueryFilter;
  * @ApiFilter(OrderFilter::class, properties={"userid","name"})
  * @ApiFilter(SearchFilter::class, properties={"name": "partial","email": "partial"})
  * @ApiFilter(QueryFilter::class, properties={"name", "email", "roles"}, arguments={"searchParameterName"="query"})
+ * @ApiFilter(RoleFilter::class, properties={"roles"}, arguments={"searchParameterName"="role"})
  * @ORM\Entity
  */
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
