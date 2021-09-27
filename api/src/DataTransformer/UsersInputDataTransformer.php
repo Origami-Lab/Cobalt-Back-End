@@ -3,35 +3,59 @@ namespace App\DataTransformer;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use ApiPlatform\Core\Serializer\AbstractItemNormalizer;
 use App\Entity\Users;
-use App\Entity\Experiments;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 final class UsersInputDataTransformer implements DataTransformerInterface
 {
     
     private $passwordHasher;
+    private $params;
     
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    public function __construct(UserPasswordHasherInterface $passwordHasher, ParameterBagInterface $params)
     {
         $this->passwordHasher = $passwordHasher;
+        $this->params = $params;
     }
     /**
      * {@inheritdoc}
      */
     public function transform($data, string $to, array $context = [])
     {
-        $user = new Users();
-        $email = $data->email;
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-            return $user;
+        $existingUser = @$context[AbstractItemNormalizer::OBJECT_TO_POPULATE];
+        $existingUserId = 0;
+        if($existingUser){
+            $user = $existingUser;
+            $existingUserId = $user->getId();
+        }else{
+            $user = new Users();
         }
-        $user->setEmail($email);
+        $email = $data->email;
+        if($email){
+            if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+                return $user;
+            }
+            $user->setEmail($email);
+        }
         $roles = [];
         $roles = $data->roles;
         if(!$roles){
-            $roles = ['ROLE_SCIENTIST'];
+            if(!$existingUserId){
+                $roles = ['ROLE_SCIENTIST'];
+            }
+        }else{
+            if(in_array('ROLE_ADMIN', $roles)){
+                $roles = ['ROLE_ADMIN'];
+            }else{
+                $validRoles = $this->params->get('app.valid_user_roles');
+                $roles = array_intersect($roles, $validRoles);
+                $roles = array_values($roles);
+            }
         }
-        $user->setRoles($roles);
+        if($roles){
+            $user->setRoles($roles);
+        }
         if($data->name){
             $user->setName($data->name);
         }
@@ -39,8 +63,10 @@ final class UsersInputDataTransformer implements DataTransformerInterface
             $user->setAvatar($data->avatar);
         }
         $password = $data->password;
-        $password = $this->passwordHasher->hashPassword($user, $password);
-        $user->setPassword($password);
+        if($password){
+            $password = $this->passwordHasher->hashPassword($user, $password);
+            $user->setPassword($password);
+        }
         return $user;
     }
 

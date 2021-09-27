@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
    app.user_roles: [{"name":"ROLE_ADMIN", "label":"Admins"},{"name":"ROLE_SCIENTIST", "label":"Scientist"}]
+   app.valid_user_roles: ["ROLE_ADMIN", "ROLE_SCIENTIST"]
 services:
     # default configuration for services in *this* file
     _defaults:

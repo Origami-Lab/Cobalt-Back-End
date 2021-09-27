@@ -7,11 +7,11 @@ final class UsersInput {
      */
     public $name;
     /**
-     * @var string
+     * @var string|null
      */
     public $email;
     /**
-     * @var string
+     * @var string|null
      */
     public $password;
     /**
