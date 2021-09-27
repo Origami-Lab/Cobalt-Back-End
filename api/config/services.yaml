@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-
+   app.user_roles: [{"name":"ROLE_ADMIN", "label":"Admins"},{"name":"ROLE_SCIENTIST", "label":"Scientist"}]
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -29,5 +29,11 @@ services:
     App\Filter\QueryFilter:
         arguments:
             $searchParameterName: 'query'
+    App\OpenApi\UserRolesDecorator:
+        decorates: 'api_platform.openapi.factory'
+        arguments: ['@.inner']
+    App\OpenApi\CountUsersDecorator:
+        decorates: 'api_platform.openapi.factory'
+        arguments: ['@.inner']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

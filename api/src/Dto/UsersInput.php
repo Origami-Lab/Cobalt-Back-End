@@ -3,7 +3,7 @@ namespace App\Dto;
 
 final class UsersInput {
     /**
-     * @var string
+     * @var string|null
      */
     public $name;
     /**
