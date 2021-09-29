@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Dto\ExperimentsOutput;
 
 
 
@@ -17,16 +19,19 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *
  * @ORM\Table(name="experiments", indexes={@ORM\Index(name="fk_experiments_users_userid", columns={"userid"})})
  * @ApiResource(
- *     attributes={
- *      "pagination_items_per_page"=10
- *      }
+ *     output=ExperimentsOutput::class
  * )
- * @ApiFilter(SearchFilter::class, properties={"title": "word_start"})
- * @ApiFilter(DateFilter::class, properties={"startdate"})
+ * @ApiFilter(SearchFilter::class, properties={"userid":"exact","title": "ipartial", "experiments2labels.labels":"exact"})
+ * @ApiFilter(DateFilter::class, properties={"startdate", "duedate"})
  * @ORM\Entity
  */
 class Experiments
 {
+    public function __construct()
+    {
+        $this->datetime = new \DateTime();
+        $this->experiments2labels = new ArrayCollection();
+    }
     /**
      * @var int
      *
@@ -79,24 +84,21 @@ class Experiments
      *
      * @ORM\Column(name="datetime", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
      */
-    private $datetime = 'CURRENT_TIMESTAMP';
-
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="lastchange", type="datetime", nullable=true, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $lastchange = 'CURRENT_TIMESTAMP';
+    private $datetime;
 
     /**
      * @var \Users
      *
-     * @ORM\ManyToOne(targetEntity="Users")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="userid", referencedColumnName="userid")
-     * })
+     * @ORM\ManyToOne(targetEntity="Users", inversedBy="experiments")
+     * @ORM\JoinColumn(name="userid", referencedColumnName="userid")
      */
     private $userid;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Experiments2labels", mappedBy="experiments", fetch="EAGER")
+     * @ApiSubresource
+     */
+    private $experiments2labels;
     
 
     public function getId(): ?int
@@ -176,18 +178,6 @@ class Experiments
         return $this;
     }
 
-    public function getLastchange(): ?\DateTimeInterface
-    {
-        return $this->lastchange;
-    }
-
-    public function setLastchange(?\DateTimeInterface $lastchange): self
-    {
-        $this->lastchange = $lastchange;
-
-        return $this;
-    }
-
     public function getUserid(): ?Users
     {
         return $this->userid;
@@ -199,6 +189,9 @@ class Experiments
 
         return $this;
     }
-
-
+    
+    public function getExperiments2labels()
+    {
+        return $this->experiments2labels;
+    }
 }

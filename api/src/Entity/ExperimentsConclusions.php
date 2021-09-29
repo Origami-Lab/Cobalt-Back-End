@@ -14,7 +14,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *
  * @ORM\Table(name="experiments_conclusions", indexes={@ORM\Index(name="fk_experiments_conclusions_experiments_id", columns={"experiment_id"}), @ORM\Index(name="fk_experiments_conclusions_users_userid", columns={"userid"})})
  * @ApiResource
- * @ApiFilter(SearchFilter::class, properties={"experimentid": "/experiments/id"})
+ * @ApiFilter(SearchFilter::class, properties={"experimentid": "exact"})
  * @ORM\Entity
  */
 class ExperimentsConclusions

@@ -40,15 +40,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *                                     },
  *                                      "filename"={
  *                                          "type"="string",
- *                                          
  *                                      },
  *                                      "experimentid"={
  *                                          "type"="string",
- *                                          
  *                                      },
  *                                      "userid"={
  *                                          "type"="string",
- *                                          
  *                                      },
  *                                 }
  *                             }
@@ -145,44 +142,49 @@ class MediaObject
         return $this;
     }
 
-    public function getFileName(): ?string
+    public function getFilename(): ?string
     {
         return $this->filename;
     }
 
-    public function setFileName(string $filename): self
+    public function setFilename(string $filename): self
     {
         $this->filename = $filename;
 
         return $this;
     }
 
-    public function getExperimentID(): ?string
+    public function getExperimentid(): ?string
     {
         return $this->experimentid;
     }
 
-    public function setExperimentID(string $experimentid): self
+    public function setExperimentid(string $experimentid): self
     {
         $this->experimentid = $experimentid;
 
         return $this;
     }
 
-    public function getUserID(): ?string
+    public function getUserid(): ?string
     {
         return $this->userid;
     }
 
-    public function setUserID(string $userid): self
+    public function setUserid(string $userid): self
     {
         $this->userid = $userid;
 
         return $this;
     }
-
-   
-
-   
     
+    public function isStringUserid(): ?bool
+    {
+        return true;
+    }
+    
+    public function isStringExperimentid(): ?bool
+    {
+        return true;
+    }
 }
