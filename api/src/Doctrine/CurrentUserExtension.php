@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Teams;
 use App\Entity\Experiments;
+use App\Entity\Users;
 
 final class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
@@ -39,13 +40,19 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
         }
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $userId = $user->getId();
+       
         if(Teams::class === $resourceClass || Experiments::class === $resourceClass){
             $teamIds = $userIds = [];
             $users2teams = $this->entityManager->getRepository('App\Entity\Users2teams')->findBy(array('users' => $userId));
             if($users2teams){
                 foreach($users2teams as $users2team){
                     $teamIds[] = $users2team->getTeams()->getId();
-                    $userIds[] = $users2team->getUsers()->getId();
+                    $teamUsers = $users2team->getTeams()->getUsers2teams();
+                    if($teamUsers){
+                        foreach($teamUsers as $teamUser){
+                            $userIds[] = $teamUser->getUsers()->getId();
+                        }
+                    }
                 }
             }
             $teamIds = array_unique($teamIds);
