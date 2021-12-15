@@ -65,7 +65,7 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
             if($userIds){
                 $userIds = implode(',',$userIds);
             }else{
-                $userIds = 0;
+                $userIds = $userId;
             }
             if(Teams::class === $resourceClass){
                 $queryBuilder->andWhere(sprintf('%s.id IN (%s)', $rootAlias, $teamIds));
