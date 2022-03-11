@@ -38,7 +38,7 @@ class ExperimentsConclusions
     /**
      * @var string
      *
-     * @ORM\Column(name="conclusions", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="conclusions", type="text", length=65535, nullable=true)
      */
     private $conclusions;
 
@@ -61,6 +61,13 @@ class ExperimentsConclusions
      * })
      */
     private $userid;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="padid", type="string", length=255, nullable=true)
+     */
+    private $padid;
 
     public function getId(): ?int
     {
@@ -115,5 +122,15 @@ class ExperimentsConclusions
         return $this;
     }
 
-
+    public function getPadid(): ?string
+    {
+        return $this->padid;
+    }
+    
+    public function setPadid(string $padid): self
+    {
+        $this->padid = $padid;
+        
+        return $this;
+    }
 }

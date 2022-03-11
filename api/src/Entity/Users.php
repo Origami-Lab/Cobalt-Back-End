@@ -100,8 +100,13 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity="Experiments", mappedBy="userid", fetch="EAGER")
      */
     private $experiments;
-
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="padid", type="string", length=255, nullable=true)
+     */
+    private $padid;
 
     public function getUserid(): ?int
     {
@@ -219,5 +224,17 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     
     public function getUsers2teams() {
         return $this->users2teams;
+    }
+    
+    public function getPadid(): ?string
+    {
+        return $this->padid;
+    }
+    
+    public function setPadid(string $padid): self
+    {
+        $this->padid = $padid;
+        
+        return $this;
     }
 }

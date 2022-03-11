@@ -19,6 +19,10 @@ final class UsersInput {
      */
     public $avatar;
     /**
+     * @var string|null
+     */
+    public $padid;
+    /**
      * @var Array|null
      */
     public $roles;
