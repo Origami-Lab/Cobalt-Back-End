@@ -67,6 +67,10 @@ final class UsersInputDataTransformer implements DataTransformerInterface
             $password = $this->passwordHasher->hashPassword($user, $password);
             $user->setPassword($password);
         }
+        $padid = $data->padid;
+        if($padid){
+            $user->setPadid($padid);
+        }
         return $user;
     }
 
