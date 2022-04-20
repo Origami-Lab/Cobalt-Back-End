@@ -29,7 +29,7 @@ use App\Filter\RoleFilter;
  *     },
  *     itemOperations={ 
  *         "get" = { "security" = "is_granted('IS_AUTHENTICATED_FULLY')" },
- *         "put" = { "security" = "is_granted('ROLE_ADMIN')" },
+ *         "put" = { "security" = "is_granted('ROLE_ADMIN') or object.getId() == user.getId()" },
  *         "delete" = { "security" = "is_granted('ROLE_ADMIN')" } 
  *     }
  * )
@@ -174,7 +174,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->avatar;
     }
     
-    public function setAvatar(string $avatar): self
+    public function setAvatar(?string $avatar): self
     {
         $this->avatar = $avatar;
         
