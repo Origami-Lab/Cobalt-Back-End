@@ -126,7 +126,7 @@ class ExperimentsProtocol
         return $this->padid;
     }
     
-    public function setPadid(string $padid): self
+    public function setPadid(?string $padid): self
     {
         $this->padid = $padid;
         
