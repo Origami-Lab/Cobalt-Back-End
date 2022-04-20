@@ -91,7 +91,9 @@
         "symfony": {
             "allow-contrib": false,
             "require": "5.3.*",
-            "flex://defaults"
+            "endpoint": [
+                "flex://defaults"
+            ]
         }
     }
 }
