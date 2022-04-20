@@ -104,9 +104,24 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="reset_password_hash", type="string", length=255, nullable=true)
+     */
+    private $resetPasswordHash;
+    
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="reset_password_exp", type="datetime", nullable=true)
+     */
+    private $resetPasswordExp;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="padid", type="string", length=255, nullable=true)
      */
     private $padid;
+
 
     public function getUserid(): ?int
     {
@@ -226,6 +241,23 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->users2teams;
     }
     
+    public function getResetPasswordHash() {
+        return $this->resetPasswordHash;
+    }
+    
+    public function setResetPasswordHash(?string $resetPasswordHash ) {
+        $this->resetPasswordHash = $resetPasswordHash;
+        return $this;
+    }
+    
+    public function getResetPasswordExp() {
+        return $this->resetPasswordExp;
+    }
+    
+    public function setResetPasswordExp(?\DateTimeInterface $resetPasswordExp) {
+        $this->resetPasswordExp = $resetPasswordExp;
+    }
+
     public function getPadid(): ?string
     {
         return $this->padid;
@@ -234,7 +266,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPadid(?string $padid): self
     {
         $this->padid = $padid;
-        
         return $this;
     }
 }
