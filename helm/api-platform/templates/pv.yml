@@ -11,6 +11,5 @@ spec:
   storageClassName: {{ .Values.persistenVolume.storageClassName | quote }}
   csi:
     driver: {{ .Values.persistenVolume.driver | quote }}
-    volumeHandle: c058fe12-ad7f-4fdf-b676-50e4ade7b303
     volumeHandle: {{ .Values.persistenVolume.volumeId | quote }}
   
