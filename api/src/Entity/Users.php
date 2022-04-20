@@ -100,7 +100,20 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity="Experiments", mappedBy="userid", fetch="EAGER")
      */
     private $experiments;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="reset_password_hash", type="string", length=255, nullable=true)
+     */
+    private $resetPasswordHash;
+    
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="reset_password_exp", type="datetime", nullable=true)
+     */
+    private $resetPasswordExp;
 
 
     public function getUserid(): ?int
@@ -219,5 +232,23 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     
     public function getUsers2teams() {
         return $this->users2teams;
+    }
+    
+    public function getResetPasswordHash() {
+        return $this->resetPasswordHash;
+    }
+    
+    public function setResetPasswordHash(?string $resetPasswordHash ) {
+        $this->resetPasswordHash = $resetPasswordHash;
+        return $this;
+    }
+    
+    public function getResetPasswordExp() {
+        return $this->resetPasswordExp;
+    }
+    
+    public function setResetPasswordExp(?\DateTimeInterface $resetPasswordExp) {
+        $this->resetPasswordExp = $resetPasswordExp;
+        return $this;
     }
 }

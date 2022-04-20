@@ -6,6 +6,8 @@
 parameters:
    app.user_roles: [{"name":"ROLE_ADMIN", "label":"Admins"},{"name":"ROLE_SCIENTIST", "label":"Scientist"}]
    app.valid_user_roles: ["ROLE_ADMIN", "ROLE_SCIENTIST"]
+   app.base_url: '%env(BASE_URL)%'
+   app.mail_from: '%env(MAIL_FROM)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -34,6 +36,9 @@ services:
         decorates: 'api_platform.openapi.factory'
         arguments: ['@.inner']
     App\OpenApi\CountUsersDecorator:
+        decorates: 'api_platform.openapi.factory'
+        arguments: ['@.inner']
+    App\OpenApi\UserManagementDecorator:
         decorates: 'api_platform.openapi.factory'
         arguments: ['@.inner']
     # add more service definitions when explicit configuration is needed
