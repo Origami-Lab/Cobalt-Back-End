@@ -90,10 +90,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "5.3.*",
-            "endpoint": [
-                "flex://defaults"
-            ]
+            "require": "5.3.*"
         }
     }
 }
