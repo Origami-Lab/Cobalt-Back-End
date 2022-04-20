@@ -21,10 +21,10 @@ class UserManagement extends AbstractController
     public function signup(Request $request, UserPasswordHasherInterface $passwordHasher)
     {
         $parameters = json_decode($request->getContent(), true);
-        $name = $parameters['name'];
-        $email = $parameters['email'];
-        $password = $parameters['password'];
-        $avatar = $parameters['avatar'];
+        $name = @$parameters['name'];
+        $email = @$parameters['email'];
+        $password = @$parameters['password'];
+        $avatar = @$parameters['avatar'];
         $roles = ['ROLE_SCIENTIST'];
         if(empty($email) || empty($password)){
             $errors = [
@@ -47,7 +47,13 @@ class UserManagement extends AbstractController
         }
         $user = new Users();
         $password = $passwordHasher->hashPassword($user, $password);
-        $user->setName($name)->setEmail($email)->setPassword($password)->setAvatar($avatar)->setRoles($roles);
+        $user->setEmail($email)->setPassword($password)->setRoles($roles);
+        if($name){
+            $user->setName($name);
+        }
+        if($avatar){
+            $user->setAvatar($avatar);
+        }
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($user);
         $entityManager->flush();
@@ -60,7 +66,7 @@ class UserManagement extends AbstractController
     public function forgotPassword(Request $request, MailerInterface $mailer)
     {
         $parameters = json_decode($request->getContent(), true);
-        $email = $parameters['email'];
+        $email = @$parameters['email'];
         if(empty($email)){
             $errors = [
                 'errors' => [
@@ -108,8 +114,8 @@ class UserManagement extends AbstractController
     public function resetPassword(Request $request, UserPasswordHasherInterface $passwordHasher)
     {
         $parameters = json_decode($request->getContent(), true);
-        $hash = $parameters['hash'];
-        $password = $parameters['password'];
+        $hash = @$parameters['hash'];
+        $password = @$parameters['password'];
         if(empty($hash)){
             $errors = [
                 'errors' => [
