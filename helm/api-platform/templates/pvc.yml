@@ -8,5 +8,5 @@ spec:
       storage: 3Gi
   storageClassName: scw-bssd
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   volumeMode: Filesystem
