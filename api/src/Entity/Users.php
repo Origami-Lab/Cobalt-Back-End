@@ -115,6 +115,13 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $resetPasswordExp;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="padid", type="string", length=255, nullable=true)
+     */
+    private $padid;
+
 
     public function getUserid(): ?int
     {
@@ -249,6 +256,16 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     
     public function setResetPasswordExp(?\DateTimeInterface $resetPasswordExp) {
         $this->resetPasswordExp = $resetPasswordExp;
+    }
+
+    public function getPadid(): ?string
+    {
+        return $this->padid;
+    }
+    
+    public function setPadid(?string $padid): self
+    {
+        $this->padid = $padid;
         return $this;
     }
 }

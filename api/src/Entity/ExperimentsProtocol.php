@@ -37,7 +37,7 @@ class ExperimentsProtocol
     /**
      * @var string
      *
-     * @ORM\Column(name="protocol", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="protocol", type="text", length=65535, nullable=true)
      */
     private $protocol;
 
@@ -60,6 +60,13 @@ class ExperimentsProtocol
      * })
      */
     private $userid;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="padid", type="string", length=255, nullable=true)
+     */
+    private $padid;
 
     public function getId(): ?int
     {
@@ -111,6 +118,18 @@ class ExperimentsProtocol
     {
         $this->userid = $userid;
 
+        return $this;
+    }
+    
+    public function getPadid(): ?string
+    {
+        return $this->padid;
+    }
+    
+    public function setPadid(?string $padid): self
+    {
+        $this->padid = $padid;
+        
         return $this;
     }
 
