@@ -8,7 +8,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - {{ .Values.persistenVolume.accessModes | quote }}
-  storageClassName: {{ .Values.persistenVolume.storageClassName | quote }}
+  storageClassName: scw-bssd-retain
   csi:
     driver: {{ .Values.persistenVolume.driver | quote }}
     volumeHandle: {{ .Values.persistenVolume.volumeId | quote }}

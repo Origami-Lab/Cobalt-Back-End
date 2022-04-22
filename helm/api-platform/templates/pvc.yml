@@ -6,7 +6,7 @@ spec:
   resources:
     requests:
       storage: 3Gi
-  storageClassName: scw-bssd
+  storageClassName: scw-bssd-retain
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
