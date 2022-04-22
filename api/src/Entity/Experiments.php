@@ -100,6 +100,13 @@ class Experiments
      */
     private $experiments2labels;
     
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="padid", type="string", length=255, nullable=true)
+     */
+    private $padid;
+    
 
     public function getId(): ?int
     {
@@ -193,5 +200,17 @@ class Experiments
     public function getExperiments2labels()
     {
         return $this->experiments2labels;
+    }
+    
+    public function getPadid(): ?string
+    {
+        return $this->padid;
+    }
+    
+    public function setPadid(?string $padid): self
+    {
+        $this->padid = $padid;
+        
+        return $this;
     }
 }
