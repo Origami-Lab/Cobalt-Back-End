@@ -10,4 +10,3 @@ spec:
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
-  finalizers: null
