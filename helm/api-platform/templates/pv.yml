@@ -14,3 +14,4 @@ spec:
     volumeHandle: {{ .Values.persistenVolume.volumeId | quote }}
   claimRef:
     name: php-public-media-pvc
+    namespace: default
