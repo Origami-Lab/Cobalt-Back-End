@@ -28,6 +28,7 @@ final class ExperimentsOutputDataTransformer implements DataTransformerInterface
         $output->datetime = $data->getDatetime();
         $output->userid = $userId;
         $output->experiments2labels = $data->getExperiments2labels();
+        $output->padid = $data->getPadid();
         return $output;
     }
 
