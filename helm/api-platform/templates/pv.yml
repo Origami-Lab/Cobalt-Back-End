@@ -12,4 +12,5 @@ spec:
   csi:
     driver: {{ .Values.persistenVolume.driver | quote }}
     volumeHandle: {{ .Values.persistenVolume.volumeId | quote }}
-  
+  claimRef:
+    name: php-public-media-pvc
