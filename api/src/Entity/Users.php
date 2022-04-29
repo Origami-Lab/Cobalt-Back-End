@@ -256,6 +256,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     
     public function setResetPasswordExp(?\DateTimeInterface $resetPasswordExp) {
         $this->resetPasswordExp = $resetPasswordExp;
+        return $this;
     }
 
     public function getPadid(): ?string

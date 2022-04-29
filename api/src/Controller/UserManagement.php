@@ -96,7 +96,7 @@ class UserManagement extends AbstractController
         $mailFrom = $this->getParameter('app.mail_from');
         $html = '<h2>Password reset requested</h2>';
         $html .= '<p>Someone requested a new password for your account. Click the link below to reset your password. The link expires in 24 hrs.</p>';
-        $html .= '<p><a href="'.$baseUrl.'/reset-password?hash='.$hash.'">Reset My Password</a></p>';
+        $html .= '<p><a href="'.$baseUrl.'/auth/reset-password?hash='.$hash.'">Reset My Password</a></p>';
         $html .= 'If you didn\'t make this request then you can safely ignore this email.';
         $email = (new Email())
         ->from($mailFrom)
