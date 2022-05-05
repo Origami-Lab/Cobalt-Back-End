@@ -8,9 +8,10 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - {{ .Values.persistenVolume.accessModes | quote }}
-  storageClassName: {{ .Values.persistenVolume.storageClassName | quote }}
+  storageClassName: scw-bssd-retain
   csi:
     driver: {{ .Values.persistenVolume.driver | quote }}
-    volumeHandle: c058fe12-ad7f-4fdf-b676-50e4ade7b303
     volumeHandle: {{ .Values.persistenVolume.volumeId | quote }}
-  
+  claimRef:
+    name: php-public-media-pvc
+    namespace: default

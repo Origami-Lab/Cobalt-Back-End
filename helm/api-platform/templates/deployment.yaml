@@ -122,6 +122,21 @@ spec:
                 configMapKeyRef:
                   name: {{ include "api-platform.fullname" . }}
                   key: vick-uploader-uri-prefix
+            - name: MAILER_DSN
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api-platform.fullname" . }}
+                  key: mailer-dsn
+            - name: MAIL_FROM
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api-platform.fullname" . }}
+                  key: mail-from
+            - name: BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "api-platform.fullname" . }}
+                  key: base-url
             - name: MERCURE_URL
               valueFrom:
                 configMapKeyRef:

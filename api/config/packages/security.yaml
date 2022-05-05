@@ -36,4 +36,7 @@ security:
          - { path: ^/authentication_token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/user-management/signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/user-management/forgot-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/user-management/reset-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/, roles: IS_AUTHENTICATED_FULLY}

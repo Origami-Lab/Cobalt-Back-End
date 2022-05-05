@@ -57,4 +57,9 @@ final class ExperimentsOutput {
      * @var Array|null
      */
     public $experiments2labels;
+    
+    /**
+     * @var string|null
+     */
+    public $padid;
 }

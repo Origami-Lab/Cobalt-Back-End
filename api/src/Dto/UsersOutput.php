@@ -27,6 +27,10 @@ final class UsersOutput {
      */
     public $lastActivity;
     /**
+     * @var string|null
+     */
+    public $padid;
+    /**
      * @var Array|null
      */
     public $users2teams;

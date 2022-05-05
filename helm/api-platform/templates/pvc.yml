@@ -2,11 +2,12 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: php-public-media-pvc
+  namespace: default
 spec:
   resources:
     requests:
       storage: 3Gi
-  storageClassName: scw-bssd
+  storageClassName: scw-bssd-retain
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem

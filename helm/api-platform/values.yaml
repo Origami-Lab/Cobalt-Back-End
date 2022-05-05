@@ -24,6 +24,9 @@ php:
   jwtPublicKey: "" 
   jwtSecretKey: ""
   vickUploaderUriPrefix: ""
+  mailerDsn: ""
+  mailFrom: ""
+  baseUrl: ""
 pwa:
   image:
     repository: "chart-example.local/api-platform/pwa"

@@ -29,7 +29,7 @@ use App\Filter\RoleFilter;
  *     },
  *     itemOperations={ 
  *         "get" = { "security" = "is_granted('IS_AUTHENTICATED_FULLY')" },
- *         "put" = { "security" = "is_granted('ROLE_ADMIN')" },
+ *         "put" = { "security" = "is_granted('ROLE_ADMIN') or object.getId() == user.getId()" },
  *         "delete" = { "security" = "is_granted('ROLE_ADMIN')" } 
  *     }
  * )
@@ -100,7 +100,27 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity="Experiments", mappedBy="userid", fetch="EAGER")
      */
     private $experiments;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="reset_password_hash", type="string", length=255, nullable=true)
+     */
+    private $resetPasswordHash;
+    
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="reset_password_exp", type="datetime", nullable=true)
+     */
+    private $resetPasswordExp;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="padid", type="string", length=255, nullable=true)
+     */
+    private $padid;
 
 
     public function getUserid(): ?int
@@ -154,7 +174,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->avatar;
     }
     
-    public function setAvatar(string $avatar): self
+    public function setAvatar(?string $avatar): self
     {
         $this->avatar = $avatar;
         
@@ -219,5 +239,34 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     
     public function getUsers2teams() {
         return $this->users2teams;
+    }
+    
+    public function getResetPasswordHash() {
+        return $this->resetPasswordHash;
+    }
+    
+    public function setResetPasswordHash(?string $resetPasswordHash ) {
+        $this->resetPasswordHash = $resetPasswordHash;
+        return $this;
+    }
+    
+    public function getResetPasswordExp() {
+        return $this->resetPasswordExp;
+    }
+    
+    public function setResetPasswordExp(?\DateTimeInterface $resetPasswordExp) {
+        $this->resetPasswordExp = $resetPasswordExp;
+        return $this;
+    }
+
+    public function getPadid(): ?string
+    {
+        return $this->padid;
+    }
+    
+    public function setPadid(?string $padid): self
+    {
+        $this->padid = $padid;
+        return $this;
     }
 }

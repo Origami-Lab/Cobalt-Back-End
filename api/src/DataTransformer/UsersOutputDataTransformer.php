@@ -30,6 +30,7 @@ final class UsersOutputDataTransformer implements DataTransformerInterface
         $output->users2teams = $data->getUsers2teams();
         $lastActivity = $data->getLastLogin();
         $output->lastActivity = $lastActivity;
+        $output->padid = $data->getPadid();
         $teams = [];
         if(!empty($output->users2teams)){
             foreach($output->users2teams as $users2teams){
