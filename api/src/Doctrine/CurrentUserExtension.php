@@ -72,6 +72,9 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
             }
             if(Experiments::class === $resourceClass){
                 $queryBuilder->andWhere(sprintf('%s.userid IN (%s)', $rootAlias, $userIds));
+                if(in_array($userId, array(20, 34, 36, 37, 38, 39, 40))){
+                    $queryBuilder->orWhere(sprintf('%s.id IN (%s)', $rootAlias, '71,72'));
+                }
             }
         }
     }
