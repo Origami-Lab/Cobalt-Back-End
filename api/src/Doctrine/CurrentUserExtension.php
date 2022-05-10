@@ -30,10 +30,10 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
 
     public function applyToItem(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, array $identifiers, string $operationName = null, array $context = [])
     {
-        $this->addWhere($queryBuilder, $resourceClass);
+        $this->addWhere($queryBuilder, $resourceClass, true, $identifiers);
     }
 
-    private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
+    private function addWhere(QueryBuilder $queryBuilder, string $resourceClass, bool $applyToItem = false, array $identifiers = []): void
     {
         if ($this->security->isGranted('ROLE_ADMIN') || null === $user = $this->security->getUser()) {
             return;
@@ -72,7 +72,13 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
             }
             if(Experiments::class === $resourceClass){
                 $queryBuilder->andWhere(sprintf('%s.userid IN (%s)', $rootAlias, $userIds));
-                $queryBuilder->orWhere(sprintf('%s.id IN (%s)', $rootAlias, '71,72'));
+                if(!$applyToItem){
+                    $queryBuilder->orWhere(sprintf('%s.id IN (%s)', $rootAlias, '71,72'));
+                }else{
+                    if(!empty($identifiers['id']) && in_array($identifiers['id'], [71, 72])){
+                        $queryBuilder->orWhere(sprintf('%s.id IN (%s)', $rootAlias, $identifiers['id']));
+                    }
+                }
             }
         }
     }
