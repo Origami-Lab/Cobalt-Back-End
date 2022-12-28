@@ -60,7 +60,7 @@ spec:
             - mountPath: /var/run/php
               name: php-socket
             - mountPath: /srv/api/public/media
-              name: php-public-media
+              name: dev-php-public-media
           lifecycle:
             preStop:
               exec:
@@ -172,7 +172,7 @@ spec:
             - mountPath: /var/run/php
               name: php-socket
             - mountPath: /srv/api/public/media
-              name: php-public-media
+              name: dev-php-public-media
           lifecycle:
             preStop:
               exec:
@@ -196,7 +196,7 @@ spec:
         emptyDir: {}
       - name: php-public-media
         persistentVolumeClaim:
-          claimName: php-public-media-pvc
+          claimName: dev-php-public-media-pvc
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
