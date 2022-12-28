@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "api-platform.fullname" . }}
+  namespace: cobalt
   labels:
     {{- include "api-platform.labels" . | nindent 4 }}
 spec:
