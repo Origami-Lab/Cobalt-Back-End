@@ -4,10 +4,11 @@ metadata:
   name: dev-php-public-media-pvc
   namespace: cobalt
 spec:
-  resources:
-    requests:
-      storage: 3Gi
-  storageClassName: efs-sc
+  volumeName: dev-php-public-media-pv
   accessModes:
     - ReadWriteMany
   volumeMode: Filesystem
+  storageClassName: efs-sc
+  resources:
+    requests:
+      storage: 10Gi
