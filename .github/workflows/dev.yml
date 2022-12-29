@@ -42,6 +42,12 @@ jobs:
           docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache php
           docker tag $IMAGE_TAG:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache pwa
+          docker tag dev-back-end_pwa:latest $ECR_REGISTRY/$ECR_REPOSITORY:dev-back-end_pwa
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:dev-back-end_pwa
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache caddy
+          docker tag dev-back-end_caddy:latest $ECR_REGISTRY/$ECR_REPOSITORY:dev-back-end_caddy
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:dev-back-end_caddy
 
       - name: Deploy
         uses: peymanmortazavi/eks-helm-deploy@v2.2.1
