@@ -7,8 +7,10 @@ services:
     environment:
       APP_ENV: prod
       APP_SECRET: ${APP_SECRET}
-
+  pwa:
+    image: dev-back-end_pwa:latest
   caddy:
+    image: dev-back-end_caddy:latest
     environment:
       MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_PUBLISHER_JWT_KEY}
       MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_SUBSCRIBER_JWT_KEY}
