@@ -44,12 +44,14 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Deploy
-        uses: wahyd4/kubectl-helm-action@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.AWS_KUBE_CONFIG_DATA }}
+        uses: peymanmortazavi/eks-helm-deploy@v1
         with:
-          args: |
-            helm dependency update helm/api-platform
-            helm uninstall dev-cobalt-back-end
-            helm install dev-cobalt-back-end ./helm/api-platform --namespace=cobalt -f ./values.yaml
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION}}
+          cluster-name: cobalt
+          config-files: ./values.yaml
+          namespace: cobalt
+          name: dev-cobalt-back-end
+          chart-path: ./helm/api-platform
 
