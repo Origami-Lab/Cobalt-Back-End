@@ -6,7 +6,7 @@ metadata:
 spec:
   resources:
     requests:
-      storage: 3Gi
+      storage: 25Gi
   storageClassName: efs-sc
   accessModes:
     - ReadWriteMany
