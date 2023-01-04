@@ -8,10 +8,10 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - {{ .Values.persistenVolume.accessModes | quote }}
-  storageClassName: scw-bssd-retain
+  storageClassName: efs-sc
   csi:
     driver: {{ .Values.persistenVolume.driver | quote }}
     volumeHandle: {{ .Values.persistenVolume.volumeId | quote }}
   claimRef:
     name: php-public-media-pvc
-    namespace: default
+    namespace: cobalt
