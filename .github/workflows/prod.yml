@@ -1,55 +1,66 @@
-name: prod
+name: production
 on: 
   workflow_dispatch
-  # push:
-  #   branches:
-  #     - master
-
-env:
-  IMAGE_PHP: ${{ secrets.DOCKER_REGISTRY }}/cobalt-back-end_php
-  IMAGE_CADDY: ${{ secrets.DOCKER_REGISTRY }}/cobalt-back-end_caddy
-  IMAGE_PWA: ${{ secrets.DOCKER_REGISTRY }}/cobalt-back-end_pwa
-  TAG: latest
 
 jobs:
   deploy:
     environment:
       name: prod
-      url: https://api.cobalt.origamilab.ch
     name: Build and deploy
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Config
         env:
-          HELM_VALUES: ${{ secrets.HELM_VALUES }}
+          HELM_VALUES: ${{ secrets.AWS_HELM_VALUES }}
         shell: bash
         run: 'echo "$HELM_VALUES" > ./values.yaml'
 
-      - name: Build images
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION}}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and Push images
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.AWS_REPO_NAME }}
+          IMAGE_TAG: back-end_php
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache php
-          docker tag cobalt-back-end_php:latest $IMAGE_PHP:$TAG
-          # docker tag cobalt-back-end_caddy:latest $IMAGE_CADDY:$TAG
-          # docker tag cobalt-back-end_pwa:latest $IMAGE_PWA:$TAG
-
-      - name: Push images
-        run: |
-          docker login ${{ secrets.DOCKER_REGISTRY }} -u nologin -p ${{ secrets.SCW_SECRET_KEY }}
-          docker push $IMAGE_PHP:$TAG
-          # docker push $IMAGE_CADDY:$TAG
-          # docker push $IMAGE_PWA:$TAG
+          docker tag $IMAGE_TAG:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache pwa
+          docker tag dev-back-end_pwa:latest $ECR_REGISTRY/$ECR_REPOSITORY:back-end_pwa
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:back-end_pwa
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache caddy
+          docker tag dev-back-end_caddy:latest $ECR_REGISTRY/$ECR_REPOSITORY:back-end_caddy
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:back-end_caddy
 
       - name: Deploy
-        uses: wahyd4/kubectl-helm-action@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        uses: peymanmortazavi/eks-helm-deploy@v2.2.1
         with:
-          args: |
-            helm dependency update helm/api-platform
-            helm uninstall cobalt-back-end
-            helm install cobalt-back-end ./helm/api-platform --namespace=default -f ./values.yaml
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION}}
+          cluster-name: cobalt
+          config-files: ./values.yaml
+          namespace: cobalt
+          name: cobalt-back-end
+          chart-path: ./helm/api-platform
 
+      - name: Restart Deployment
+        uses: kodermax/kubectl-aws-eks@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.AWS_KUBE_CONFIG }}
+        with:
+          args: rollout restart deployment/cobaltbeprod -n cobalt
