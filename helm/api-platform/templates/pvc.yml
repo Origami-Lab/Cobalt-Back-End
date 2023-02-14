@@ -9,3 +9,20 @@ spec:
   resources:
     requests:
       storage: 25Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cobalt-pv-dev
+spec:
+  capacity:
+    storage: 25Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    # replace the following ip with your NFS IP
+    server: 10.45.16.187
+    path: "/"
+  persistentVolumeReclaimPolicy: Delete
+  claimRef:
+    name: cobalt-pvc-dev
