@@ -24,5 +24,3 @@ spec:
     server: 10.45.16.187
     path: "/"
   persistentVolumeReclaimPolicy: Delete
-  claimRef:
-    name: cobalt-pvc
