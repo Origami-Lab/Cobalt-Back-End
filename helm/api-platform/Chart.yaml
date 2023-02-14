@@ -24,8 +24,8 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 appVersion: 0.1.0
 
-#dependencies:
-#  - name: postgresql
-#    version: ~10.1.4
-#    repository: https://charts.bitnami.com/bitnami/
-#    condition: postgresql.enabled
+dependencies:
+  - name: postgresql
+    version: ~10.1.4
+    repository: https://charts.bitnami.com/bitnami/
+    condition: postgresql.enabled

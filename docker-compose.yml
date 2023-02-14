@@ -5,8 +5,6 @@ services:
     build:
       context: ./api
       target: api_platform_php
-    depends_on:
-      - database
     restart: unless-stopped
     volumes:
       - php_socket:/var/run/php
@@ -19,7 +17,7 @@ services:
   pwa:
     build:
       context: ./pwa
-      target: api_platform_pwa_prod
+      target: api_platform_pwa
     environment:
       API_PLATFORM_CLIENT_GENERATOR_ENTRYPOINT: http://caddy
       NEXT_PUBLIC_ENTRYPOINT: http://caddy
@@ -54,17 +52,6 @@ services:
       - target: 443
         published: 443
         protocol: udp
-
-  database:
-    image: postgres:13-alpine
-    environment:
-      - POSTGRES_DB=api
-      - POSTGRES_PASSWORD=!ChangeMe!
-      - POSTGRES_USER=api-platform
-    volumes:
-      - db_data:/var/lib/postgresql/data:rw
-      # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./api/docker/db/data:/var/lib/postgresql/data:rw
 
 volumes:
   php_socket:
