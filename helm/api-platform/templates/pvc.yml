@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: php-public-media-pvc
-  namespace: cobalt
+  name: cobalt-pvc
+  namespace: kubeflow
 spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
   resources:
     requests:
       storage: 25Gi
-  storageClassName: efs-sc
-  accessModes:
-    - ReadWriteMany
   volumeMode: Filesystem
