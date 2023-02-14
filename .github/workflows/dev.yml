@@ -6,9 +6,9 @@ on:
       - develop
 
 env:
-  IMAGE_PHP: ${{ secrets.DOCKER_REGISTRY }}/cobalt-back-end_php
-  IMAGE_CADDY: ${{ secrets.DOCKER_REGISTRY }}/cobalt-back-end_caddy
-  IMAGE_PWA: ${{ secrets.DOCKER_REGISTRY }}/cobalt-back-end_pwa
+  IMAGE_PHP: ${{ secrets.DOCKER_REGISTRY }}/dev-cobalt-back-end_php
+  IMAGE_CADDY: ${{ secrets.DOCKER_REGISTRY }}/dev-cobalt-back-end_caddy
+  IMAGE_PWA: ${{ secrets.DOCKER_REGISTRY }}/dev-cobalt-back-end_pwa
   TAG: latest
 
 jobs:
