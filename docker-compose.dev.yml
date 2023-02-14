@@ -5,7 +5,7 @@ services:
   php:
     image: dev-back-end_php:latest
     environment:
-      APP_ENV: prod
+      APP_ENV: dev
       APP_SECRET: ${APP_SECRET}
   pwa:
     image: dev-back-end_pwa:latest
