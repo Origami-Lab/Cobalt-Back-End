@@ -6,9 +6,9 @@ on:
       - develop
 
 env:
-  IMAGE_PHP: ${{ secrets.DOCKER_REGISTRY }}/dev-cobalt-back-end_php
-  IMAGE_CADDY: ${{ secrets.DOCKER_REGISTRY }}/dev-cobalt-back-end_caddy
-  IMAGE_PWA: ${{ secrets.DOCKER_REGISTRY }}/dev-cobalt-back-end_pwa
+  IMAGE_PHP: ${{ secrets.DOCKER_REGISTRY }}/dev-back-end_php
+  IMAGE_CADDY: ${{ secrets.DOCKER_REGISTRY }}/dev-back-end_caddy
+  IMAGE_PWA: ${{ secrets.DOCKER_REGISTRY }}/dev-back-end_pwa
   TAG: latest
 
 jobs:
@@ -31,11 +31,11 @@ jobs:
       - name: Build images
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache php
-          docker tag dev-cobalt-back-end_php:latest $IMAGE_PHP:$TAG
+          docker tag dev-back-end_php:latest $IMAGE_PHP:$TAG
           docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache caddy
-          docker tag dev-cobalt-back-end_caddy:latest $IMAGE_CADDY:$TAG
+          docker tag dev-back-end_caddy:latest $IMAGE_CADDY:$TAG
           docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache pwa
-          docker tag dev-cobalt-back-end_pwa:latest $IMAGE_PWA:$TAG
+          docker tag dev-back-end_pwa:latest $IMAGE_PWA:$TAG
 
       - name: Push images
         run: |
