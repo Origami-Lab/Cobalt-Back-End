@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "api-platform.fullname" . }}
-  namespace: cobalt
   labels:
     {{- include "api-platform.labels" . | nindent 4 }}
 spec:
@@ -196,7 +195,7 @@ spec:
         emptyDir: {}
       - name: php-public-media
         persistentVolumeClaim:
-          claimName: dev-php-public-media-pvc
+          claimName: cobalt-pvc-dev
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

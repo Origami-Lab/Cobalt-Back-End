@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "api-platform.fullname" . }}-pwa
-  namespace: cobalt
   labels:
     {{- include "api-platform.labelsPWA" . | nindent 4 }}
 spec:
