@@ -28,6 +28,21 @@ jobs:
         shell: bash
         run: 'echo "$HELM_VALUES" > ./values.yaml'
 
+      - name: Build images
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache php
+          docker tag dev-back-end_php:latest $IMAGE_PHP:$TAG
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache caddy
+          docker tag dev-back-end_caddy:latest $IMAGE_CADDY:$TAG
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache pwa
+          docker tag dev-back-end_pwa:latest $IMAGE_PWA:$TAG
+
+      - name: Push images
+        run: |
+          docker login ${{ secrets.DOCKER_REGISTRY }} -u nologin -p ${{ secrets.SCW_SECRET_KEY }}
+          docker push $IMAGE_PHP:$TAG
+          docker push $IMAGE_CADDY:$TAG
+          docker push $IMAGE_PWA:$TAG
 
       - name: Deploy
         uses: wahyd4/kubectl-helm-action@master
