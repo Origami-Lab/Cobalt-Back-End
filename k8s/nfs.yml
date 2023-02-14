@@ -40,17 +40,3 @@ spec:
         - name: nfs-pvc
           persistentVolumeClaim:
             claimName: nfs-pvc
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: nfs-pv
-spec:
-  capacity:
-    storage: 25Gi
-  accessModes:
-    - ReadWriteMany
-  nfs:
-    # replace the following ip with your NFS IP
-    server: 10.37.168.80
-    path: "/"

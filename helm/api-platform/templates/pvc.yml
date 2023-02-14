@@ -22,5 +22,5 @@ spec:
   nfs:
     # replace the following ip with your NFS IP
     server: 10.45.16.187
-    path: "/"
+    path: "/data"
   persistentVolumeReclaimPolicy: Delete
