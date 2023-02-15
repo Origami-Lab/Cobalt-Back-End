@@ -21,7 +21,7 @@ jobs:
 
       - name: Config
         env:
-          HELM_VALUES: ${{ secrets.DEV_HELM_VALUES }}
+          HELM_VALUES: ${{ secrets.HELM_VALUES }}
         shell: bash
         run: 'echo "$HELM_VALUES" > ./values.yaml'
 
