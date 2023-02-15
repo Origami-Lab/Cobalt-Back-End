@@ -21,6 +21,6 @@ spec:
     - ReadWriteMany
   nfs:
     # replace the following ip with your NFS IP
-    server: 10.45.16.187
+    server: 10.41.188.99
     path: "/"
   persistentVolumeReclaimPolicy: Delete
