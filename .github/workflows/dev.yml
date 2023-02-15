@@ -37,5 +37,5 @@ jobs:
         with:
           args: |
             helm dependency update helm/api-platform
-            helm uninstall dev-back-end
+            helm uninstall cobalt-back-end
             helm install dev-back-end ./helm/api-platform --namespace=default -f ./values.yaml
