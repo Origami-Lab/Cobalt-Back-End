@@ -21,7 +21,7 @@ use App\Dto\ExperimentsOutput;
  * @ApiResource(
  *     output=ExperimentsOutput::class
  * )
- * @ApiFilter(SearchFilter::class, properties={"userid":"exact","title": "ipartial", "experiments2labels.labels":"exact"})
+ * @ApiFilter(SearchFilter::class, properties={"userid":"exact","title": "ipartial", "experiments2labels.labels":"exact", "experiments2molecules.molecules":"exact"})
  * @ApiFilter(DateFilter::class, properties={"startdate", "duedate"})
  * @ORM\Entity
  */
@@ -99,6 +99,12 @@ class Experiments
      * @ApiSubresource
      */
     private $experiments2labels;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Experiments2molecules", mappedBy="experiments", fetch="EAGER")
+     * @ApiSubresource
+     */
+    private $experiments2molecules;
     
     /**
      * @var string
@@ -196,10 +202,15 @@ class Experiments
 
         return $this;
     }
-    
+
     public function getExperiments2labels()
     {
         return $this->experiments2labels;
+    }
+
+    public function getExperiments2molecules()
+    {
+        return $this->experiments2molecules;
     }
     
     public function getPadid(): ?string
