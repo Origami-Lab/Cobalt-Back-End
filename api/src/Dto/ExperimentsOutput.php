@@ -57,7 +57,10 @@ final class ExperimentsOutput {
      * @var Array|null
      */
     public $experiments2labels;
-    
+    /**
+     * @var Array|null
+     */
+    public $experiments2molecules;
     /**
      * @var string|null
      */
