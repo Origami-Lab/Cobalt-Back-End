@@ -4,7 +4,7 @@ namespace App\DataTransformer;
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Entity\Molecules;
 
-final class MoculesInputDataTransformer implements DataTransformerInterface
+final class MoleculesInputDataTransformer implements DataTransformerInterface
 {
     /**
      * {@inheritdoc}
