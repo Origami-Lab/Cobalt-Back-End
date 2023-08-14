@@ -48,6 +48,6 @@ final class Experiments2moleculesInputDataTransformer implements DataTransformer
         if ($data instanceof Experiments2molecules) {
           return false;
         }
-        return Experiments2moleculesOutput::class === $to && null !== ($context['input']['class'] ?? null);
+        return Experiments2molecules::class === $to && null !== ($context['input']['class'] ?? null);
     }
 }
