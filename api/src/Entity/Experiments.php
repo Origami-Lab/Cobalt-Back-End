@@ -31,6 +31,7 @@ class Experiments
     {
         $this->datetime = new \DateTime();
         $this->experiments2labels = new ArrayCollection();
+        $this->experiments2molecules = new ArrayCollection();
     }
     /**
      * @var int

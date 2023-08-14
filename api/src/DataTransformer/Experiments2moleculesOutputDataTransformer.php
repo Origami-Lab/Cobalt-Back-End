@@ -25,6 +25,6 @@ final class Experiments2moleculesOutputDataTransformer implements DataTransforme
      */
     public function supportsTransformation($data, string $to, array $context = []): bool
     {
-        return Experiments2molecules::class === $to && $data instanceof Experiments2molecules;
+        return Experiments2moleculesOutput::class === $to && $data instanceof Experiments2molecules;
     }
 }
