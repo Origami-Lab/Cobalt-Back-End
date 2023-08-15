@@ -12,7 +12,10 @@ final class MoleculesOutput {
      * @var string
      */
     public $molecule;
-
+    /**
+     * @var string
+     */
+    public $fullmolecule;
     /**
      * @var Array|null
      */

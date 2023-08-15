@@ -25,9 +25,11 @@ final class Experiments2moleculesInputDataTransformer implements DataTransformer
         $experiments = $this->entityManager->find(Experiments::class, $experimentId);
         $moleculeId = $data->moleculeId;
         $molecule = $data->molecule;
+        $fullmolecule = $data->fullmolecule;
         if(!$moleculeId && $molecule){
             $molecules = new Molecules();
             $molecules->setMolecule($molecule);
+            $molecules->setFullmolecule($fullmolecule);
             $this->entityManager->persist($molecules);
             $this->entityManager->flush();
         }else{

@@ -63,11 +63,6 @@ class Molecules
 
     public function setMolecule(string $molecule): self
     {
-        $fullmolecule = $molecule;
-        $this->fullmolecule = $fullmolecule;
-        if(strlen($fullmolecule) > 255){
-            $molecule = mb_substr($fullmolecule, 0, 255);
-        }
         $this->molecule = $molecule;
 
         return $this;
@@ -81,11 +76,6 @@ class Molecules
     public function setFullmolecule(string $fullmolecule): self
     {
         $this->fullmolecule = $fullmolecule;
-        $molecule = $fullmolecule;
-        if(strlen($fullmolecule) > 255){
-            $molecule = mb_substr($fullmolecule, 0, 255);
-        }
-        $this->molecule = $molecule;
         return $this;
     }
 
