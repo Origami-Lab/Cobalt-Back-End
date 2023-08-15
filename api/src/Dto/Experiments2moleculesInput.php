@@ -17,4 +17,9 @@ final class Experiments2moleculesInput {
      * @var string|null
      */
     public $molecule;
+    
+    /**
+     * @var string|null
+     */
+    public $fullmolecule;
 }

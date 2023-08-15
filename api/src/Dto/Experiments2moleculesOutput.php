@@ -22,4 +22,8 @@ final class Experiments2moleculesOutput {
      * @var string|null
      */
     public $molecule;
+    /**
+     * @var string|null
+     */
+    public $fullmolecule;
 }

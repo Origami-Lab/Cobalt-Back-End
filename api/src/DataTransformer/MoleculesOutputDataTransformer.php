@@ -15,6 +15,7 @@ final class MoleculesOutputDataTransformer implements DataTransformerInterface
         $output = new MoleculesOutput();
         $output->id = $data->getId();
         $output->molecule = $data->getMolecule();
+        $output->fullmolecule = $data->getFullmolecule();
         $output->experiments2molecules = $data->getExperiments2molecules();
         return $output;
     }

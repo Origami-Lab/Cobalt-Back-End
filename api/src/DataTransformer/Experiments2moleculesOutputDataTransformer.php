@@ -17,6 +17,7 @@ final class Experiments2moleculesOutputDataTransformer implements DataTransforme
         $output->experimentId = !empty($data->getExperiments()) ? $data->getExperiments()->getId() : null;
         $output->moleculeId = !empty($data->getMolecules()) ? $data->getMolecules()->getId() : null;
         $output->molecule = !empty($data->getMolecules()) ? $data->getMolecules()->getMolecule() : null;
+        $output->fullmolecule = !empty($data->getMolecules()) ? $data->getMolecules()->getFullmolecule() : null;
         return $output;
     }
 

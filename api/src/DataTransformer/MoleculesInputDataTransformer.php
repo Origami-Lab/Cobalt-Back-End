@@ -13,7 +13,9 @@ final class MoleculesInputDataTransformer implements DataTransformerInterface
     {
         $molecules = new Molecules();
         $molecule = $data->molecule;
+        $fullmolecule = $data->fullmolecule;
         $molecules->setMolecule($molecule);
+        $molecules->setFullmolecule($fullmolecule);
         return $molecules;
     }
 
