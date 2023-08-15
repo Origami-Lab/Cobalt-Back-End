@@ -58,7 +58,7 @@ class Molecules
 
     public function getMolecule(): ?string
     {
-        return $this->fullmolecule ? $this->fullmolecule : $this->molecule;
+        return $this->molecule;
     }
 
     public function setMolecule(string $molecule): self
@@ -70,7 +70,7 @@ class Molecules
 
     public function getFullmolecule(): ?string
     {
-        return $this->fullmolecule ? $this->fullmolecule : $this->molecule;
+        return $this->fullmolecule;
     }
 
     public function setFullmolecule(string $fullmolecule): self
