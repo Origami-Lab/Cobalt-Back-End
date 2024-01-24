@@ -1,12 +1,6 @@
-name: production
-on: 
+name: prod
+on:
   workflow_dispatch
-
-env:
-  IMAGE_PHP: ${{ secrets.DOCKER_REGISTRY }}/back-end_php
-  IMAGE_CADDY: ${{ secrets.DOCKER_REGISTRY }}/back-end_caddy
-  IMAGE_PWA: ${{ secrets.DOCKER_REGISTRY }}/back-end_pwa
-  TAG: latest
 
 jobs:
   deploy:
@@ -14,39 +8,39 @@ jobs:
       name: prod
     name: Build and deploy
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Config
         env:
-          HELM_VALUES: ${{ secrets.HELM_VALUES }}
+          ENV_VALUES: ${{ secrets.ENV_VALUES }}
         shell: bash
-        run: 'echo "$HELM_VALUES" > ./values.yaml'
+        run: 'echo "$ENV_VALUES" > api/.env'
 
-      - name: Build images
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache php
-          docker tag back-end_php:latest $IMAGE_PHP:$TAG
-          #docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache caddy
-          #docker tag back-end_caddy:latest $IMAGE_CADDY:$TAG
-          #docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache pwa
-          #docker tag back-end_pwa:latest $IMAGE_PWA:$TAG
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.REGISTRY_ACTOR }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
 
-      - name: Push images
+      - name: Build and push image to GitHub Container Registry
         run: |
-          docker login ${{ secrets.DOCKER_REGISTRY }} -u nologin -p ${{ secrets.SCW_SECRET_KEY }}
-          docker push $IMAGE_PHP:$TAG
-          #docker push $IMAGE_CADDY:$TAG
-          #docker push $IMAGE_PWA:$TAG
+           docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache php
+           docker tag cobalt-php:latest $IMAGE_PHP:$TAG ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-php:latest
+           docker push $IMAGE_PHP:$TAG ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-php:latest
 
       - name: Deploy
-        uses: wahyd4/kubectl-helm-action@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
+        uses: appleboy/ssh-action@v1.0.2
         with:
-          args: |
-            helm dependency update helm/api-platform
-            helm uninstall back-end
-            helm install back-end ./helm/api-platform --namespace=default -f ./values.yaml
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /root/app
+            docker login --username ${{ secrets.REGISTRY_ACTOR }} --password ${{ secrets.REGISTRY_TOKEN }} ghcr.io
+            docker image pull ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-php:latest
+            docker compose up --no-build --pull never --detach cobaltphp
