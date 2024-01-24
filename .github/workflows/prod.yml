@@ -29,8 +29,8 @@ jobs:
       - name: Build and push image to GitHub Container Registry
         run: |
            docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache php
-           docker tag cobalt-php:latest ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-php:latest
-           docker push cobalt-php:latest ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-php:latest
+           docker tag back-end_php:latest ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-php:latest
+           docker push ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-php:latest
 
       - name: Deploy
         uses: appleboy/ssh-action@v1.0.2
