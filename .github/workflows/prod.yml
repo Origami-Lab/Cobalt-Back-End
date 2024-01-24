@@ -30,7 +30,7 @@ jobs:
         run: |
            docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache php
            docker tag cobalt-php:latest $IMAGE_PHP:$TAG ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-php:latest
-           docker push $IMAGE_PHP:$TAG ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-php:latest
+           docker push cobalt-php:latest ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-php:latest
 
       - name: Deploy
         uses: appleboy/ssh-action@v1.0.2
