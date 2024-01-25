@@ -31,6 +31,9 @@ jobs:
            docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache php
            docker tag back-end_php:latest ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-php:latest
            docker push ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-php:latest
+           docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache caddy
+           docker tag back-end_caddy:latest ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-caddy:latest
+           docker push ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-caddy:latest
 
       - name: Deploy
         uses: appleboy/ssh-action@v1.0.2
@@ -43,4 +46,6 @@ jobs:
             cd /root/app
             docker login --username ${{ secrets.REGISTRY_ACTOR }} --password ${{ secrets.REGISTRY_TOKEN }} ghcr.io
             docker image pull ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-php:latest
+            docker image pull ${{ secrets.REGISTRY_DOCKER_REGISTRY }}/cobalt-caddy:latest
             docker compose up --no-build --pull never --detach cobaltphp
+            docker compose up --no-build --pull never --detach cobaltcaddy
