@@ -10,7 +10,7 @@
 }
 
 {$SERVER_NAME}
-auto_https off
+
 log
 
 # Matches requests for HTML documents, for static files and for Next.js files,
